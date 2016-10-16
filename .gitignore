@@ -1,0 +1,7 @@
+cache/**
+compiledCache/**
+templates_c/**
+
+cache/
+compiledCache/
+templates_c/
