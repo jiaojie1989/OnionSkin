@@ -6,7 +6,6 @@ class User {
 	private $id=null;
 	private $username;
 	private $passwordAndSalt;
-	private $salt;
 	private $createdTime;
 	private $admin;
 	

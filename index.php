@@ -1,6 +1,7 @@
 <?php
-require_once('src/Bootstrap.class.php');
+require_once('src/OnionSkin/Bootstrap.class.php');
 
-Bootstrap::init();
-Bootstrap::debug(true);
-Bootstrap::execute();
+OnionSkin\Bootstrap::bakeCss();
+OnionSkin\Bootstrap::init();
+OnionSkin\Bootstrap::debug(true);
+OnionSkin\Bootstrap::execute();

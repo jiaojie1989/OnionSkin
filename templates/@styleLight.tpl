@@ -1,2 +1,1 @@
-{asset_compile}
-{/asset_compile}
+<link type="text/css" rel="stylesheet" href="styles/styleLight.css" />
