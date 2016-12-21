@@ -1,0 +1,22 @@
+{
+  "name": "Prosecute/OnionSkin",
+  "description": "OnionSkin as self hosted version of pastebin.com",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Jiri Fryc",
+      "email": "inbox@jirifryc.cz",
+      "homepage": "http://www.jirifryc.cz/",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "smarty/smarty": "~3.1",
+    "doctrine/orm": "*",
+    "leafo/lessphp": "0.4.0",
+    "leafo/scssphp": "0.6.6",
+    "twbs/bootstrap-sass": "v3.3.7"
+  },
+  "autoload": {"psr-4": {"OnionSkin\\": "src/"}}
+
+}

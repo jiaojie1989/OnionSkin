@@ -2,14 +2,16 @@
 
 namespace OnionSkin\Pages;
 
-public class EditPage extends \OnionSkin\Page
+class EditPage extends \OnionSkin\Page
 {
 	public function __construct()
 	{
-		$this->RequireLogged = true;
+		$this->RequireLogged = false;
 		$this->RequireAdmin = false;
 	}
-	
+	/**
+	 * @return boolean
+	 */
 	public function execute()
 	{
 		switch($this->req_metod())
@@ -33,10 +35,12 @@ public class EditPage extends \OnionSkin\Page
 			case "DELETE":
 			
 		}
+        return $this->get();
 	}
 	
 	private function get()
 	{
-		
+        $this->ok("main/NoteNew.tpl");
+        return true;
 	}
 }

@@ -1,26 +1,33 @@
 <?php
 namespace OnionSkin;
-require_once('src/CustomSmarty.class.php');
-require_once('libs/lessc.inc.php');
 
 
 class Bootstrap
 {
-	private $debug = false;
-	
-	public static $Smarty;	
+	private static $debug = false;
+
+	/**
+	 * @var \Smarty
+	 */
+	public static $Smarty;
+	/**
+	 * @var \Doctrine\ORM\EntityManager
+	 */
 	public static $DB;
+	/**
+	 * @var mixed
+	 */
 	public static $Page;
 	public static $User;
 	public static $Config;
-	
+
 	public static function autoload($className)
 	{
 		$url = "src/".$className .".class.php";
 		if(is_file($url))
 			require_once($url);
 	}
-	
+
 	public static function init()
 	{
 		spl_autoload_register("OnionSkin\Bootstrap::autoload");
@@ -29,115 +36,95 @@ class Bootstrap
 		else
 			$CONFIG = parse_ini_file("config/configuration.ini",true);
 		session_start();
+        $dbconf= \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(array(__DIR__."/src",self::$debug));
+        self::$DB=\Doctrine\ORM\EntityManager::create($CONFIG["Database"],$dbconf);
+        $CONFIG["Database"]=null;
 		self::$Config=$CONFIG;
-		self::$Smarty = new \CustomSmarty();
+		self::$Smarty = new \Smarty();
+        self::$Smarty->setTemplateDir('templates/');
+        self::$Smarty->setCompileDir('templates_c/');
+        self::$Smarty->setConfigDir('configs/');
+        self::$Smarty->setCacheDir('cache/');
+        self::$Smarty->caching = \Smarty::CACHING_LIFETIME_CURRENT;
+        self::$Smarty->assign('app_name', 'OnionSkin');
 		self::$Smarty->assign("lng",Lang::LoadCZ());
-		if(is_null($CONFIG) || $CONFIG['OnionSkin']['installed']!=1)
-		{
-			if(self::installedCheck())
-			{
-				self::fail(500);
-			}
-			else
-				self::install();
-		}
 		self::$Smarty->error_reporting = E_ALL & ~E_NOTICE;
 		self::$User = $_SESSION["User"];
-		self::$Page = Bootstrap/Page::resolve(sanitize($_GET["url"]));
+		self::$Page = Page::resolve(self::sanitize($_GET["url"]));
 	}
-	
-	private static function install()
-	{
-		if(empty($_GET["url"]))
-			$url="index";
-		else
-			$url=sanitize($_GET["url"]);
-		switch($url)
-		{
-			case "install2": break;
-			case "install3": break;
-			default:
-				$page =  new Install\DatabaseInstallPage();
-				break;
-		}
-		$page->execute();
-	}
-	
-	private static function installedCheck()
-	{
-		if(file_exists("src/OnionSkin/Install"))
-		{
-			return false;
-		}
-		return true;
-	}
-	
+
+
+
 	public static function sanitize($var)
 	{
 		if(is_null($var))
 			return $var;
 		return trim(stripslashes(htmlspecialchars($var)));
 	}
-	
+
 	public static function debug($var)
 	{
-		$this->$debug=$var;
+		self::$debug = $var;
 		if($var)
 		{
 			error_reporting(3);
 			ini_set('display_errors', TRUE);
-			self::$Smarty->caching = 0; 
+			self::$Smarty->caching = false;
 		}
 		else
 		{
 			error_reporting(0);
 			ini_set('display_errors', FALSE);
-			self::$Smarty->caching = 3; 
+			self::$Smarty->caching = true;
 		}
 	}
-	
-	
+
+
 	public static function execute()
 	{
-		if(!checkRights())
-			fail(403);
-		if(!$Page->modelSanitation())
-			fail(401);
-		if($debug)
-			bakeCss();
-		setupLang();
-		
-		ok();
+		if(!self::checkRights())
+			self::fail(403);
+		if(self::$debug)
+			self::bakeCss();
+		self::setupLang();
+
+        $Page = self::$Page;
+		$Page->execute();
+
 	}
 	public static function setupLang()
 	{
-		
+
 	}
-	
-	private static function ok($var)
-	{
-		$Page->execute($var);
-	}
+
 	static function fail($code)
 	{
 		die;
 	}
-	
+
 	public static function  bakeCss()
 	{
-		$less = new \lessc;
+        $scss = new \Leafo\ScssPhp\Compiler();
+        $scss->setLineNumberStyle(\Leafo\ScssPhp\Compiler::LINE_COMMENTS);
+        $scss->setFormatter("\Leafo\ScssPhp\Formatter\Crunched");
+        $scss->addImportPath("vendor/twbs/bootstrap-sass/assets/stylesheets");
 		try {
-			//$less->compileFile("styles/colorMain.less","styles/styleMain.css");
-			$less->compileFile("styles/colorLight.less","styles/styleLight.css");
-			//$less->compileFile("styles/colorDark.less","styles/styleDark.css");
+          //  self::bakeFile($scss,"styles/colorMain.scss","styles_c/colorMain.css");
+          //  self::bakeFile($scss,"styles/colorLight.scss","styles_c/colorLight.css");
+            self::bakeFile($scss,"styles/colorDark.scss","styles_c/colorDark.css");
 		} catch (exception $e) {
-			fail(502,$e->getMessage());
+			self::fail(502,$e->getMessage());
 		}
 	}
-	
+    private static function bakeFile($scss,$inputFile,$outputFile)
+    {
+        $compiled=$scss->compile(file_get_contents($inputFile));
+        file_put_contents($outputFile,$compiled);
+    }
+
 	static function checkRights()
 	{
-		return !$Page->RequireLogged || (!$Page->RequireAdmin && $Page->RequireLogged && $User->Logged) ||($Page->RequireAdmin && $User->Admin);
+		return !self::$Page->RequireLogged || (!self::$Page->RequireAdmin && self::$Page->RequireLogged && self::$User->Logged) ||(self::$Page->RequireAdmin && self::$User->Admin);
 	}
-	
+
 }

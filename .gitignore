@@ -5,3 +5,6 @@ templates_c/**
 cache/
 compiledCache/
 templates_c/
+/vendor
+/compileCache
+/styles_c
