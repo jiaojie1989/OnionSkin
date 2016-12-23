@@ -26,6 +26,9 @@
     <Compile Include="config\configuration.ini" />
     <Compile Include="config\README.md" />
     <Compile Include="lang\lang.cz.ini" />
+    <Compile Include="src\OnionSkin\Annotations\Get.class.php" />
+    <Compile Include="src\OnionSkin\Annotations\Path.class.php" />
+    <Compile Include="src\OnionSkin\Annotations\Post.class.php" />
     <Compile Include="src\OnionSkin\Annotations\StringLength.class.php" />
     <Compile Include="src\OnionSkin\Annotations\Validate.class.php" />
     <Compile Include="src\OnionSkin\CustomSmarty.class.php" />

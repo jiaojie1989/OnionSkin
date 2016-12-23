@@ -3,13 +3,13 @@
 namespace OnionSkin\Routing
 {
 	/**
-	 * Route short summary.
-	 *
-	 * Route description.
-	 *
-	 * @version 1.0
-	 * @author Fry
-	 */
+     * Route short summary.
+     *
+     * Route description.
+     *
+     * @version 1.0
+     * @author Fry
+     */
 	class Route
 	{
         private $methods;
@@ -52,8 +52,31 @@ namespace OnionSkin\Routing
             $model= new $this->model;
             $reader = new \Doctrine\Common\Annotations\AnnotationReader();
             $reflClass = new \ReflectionClass($this->model);
+            $props   = $reflClass->getProperties(\ReflectionProperty::IS_PUBLIC | \ReflectionProperty::IS_PROTECTED);
+            foreach($props as $prop)
+            {
+            }
             $classAnnotations = $reader->getClassAnnotations($reflClass);
 
+
+        }
+        private function model_load($model,$prop,$reader,$request)
+        {
+            $data=$reader->getPropertyAnnotation($prop,"\OnionSkin\Annotations\Post");
+            if(!is_null($data))
+            {
+                $prop->setValue($model,$request->POST[$data->id]);
+            }
+            $data=$reader->getPropertyAnnotation($prop,"\OnionSkin\Annotations\Get");
+            if(!is_null($data))
+            {
+                $prop->setValue($model,$request->GET[$data->id]);
+            }
+            $data=$reader->getPropertyAnnotation($prop,"\OnionSkin\Annotations\Path");
+            if(!is_null($data))
+            {
+                $prop->setValue($model,$request->Params[$data->id]);
+            }
         }
 
 	}

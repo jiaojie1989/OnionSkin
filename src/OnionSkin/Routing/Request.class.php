@@ -29,6 +29,10 @@ namespace OnionSkin\Routing
 
         public $Params;
 
+        public $GET;
+
+        public $POST;
+
         public $AcceptLanguages;
 
         public $Accept;
