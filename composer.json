@@ -15,7 +15,9 @@
     "doctrine/orm": "*",
     "leafo/lessphp": "0.4.0",
     "leafo/scssphp": "0.6.6",
-    "twbs/bootstrap-sass": "v3.3.7"
+    "twbs/bootstrap-sass": "v3.3.7",
+    "matthiasmullie/minify": "*",
+    "components/highlightjs" :  "9.8.0"
   },
   "autoload": {"psr-4": {"OnionSkin\\": "src/"}}
 

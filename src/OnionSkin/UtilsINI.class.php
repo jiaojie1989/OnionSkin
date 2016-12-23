@@ -2,7 +2,7 @@
 
 namespace OnionSkin;
 
-public class UtilsINI
+class UtilsINI
 {
 	public static function write_ini_file($assoc_arr, $path, $has_sections)
         {
@@ -26,7 +26,7 @@ public class UtilsINI
                 if (is_array($val)) {
                     if($has_sections) {
                         $content .= "[$key]\n";
-                        self::_write_ini_file_r(&$content, $val, false);
+                        self::_write_ini_file_r($content, $val, false);
                     } else {
                         foreach($val as $iKey => $iVal) {
                             if (is_int($iKey))

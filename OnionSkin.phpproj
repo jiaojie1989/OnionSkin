@@ -8,6 +8,12 @@
     </RootNamespace>
     <OutputType>Library</OutputType>
     <ProjectTypeGuids>{A0786B88-2ADB-4C21-ABE8-AA2D79766269}</ProjectTypeGuids>
+    <SaveServerSettingsInUserFile>false</SaveServerSettingsInUserFile>
+    <Runtime>PHP</Runtime>
+    <RuntimeVersion>7.0</RuntimeVersion>
+    <EnvName>PHPDev</EnvName>
+    <PHPDevHostName>localhost</PHPDevHostName>
+    <PHPDevAutoPort>true</PHPDevAutoPort>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <IncludeDebugInformation>true</IncludeDebugInformation>
@@ -20,30 +26,29 @@
     <Compile Include="config\configuration.ini" />
     <Compile Include="config\README.md" />
     <Compile Include="lang\lang.cz.ini" />
-    <Compile Include="src\OnionSkin\Entities\Category.class.php" />
+    <Compile Include="src\OnionSkin\Annotations\StringLength.class.php" />
+    <Compile Include="src\OnionSkin\Annotations\Validate.class.php" />
+    <Compile Include="src\OnionSkin\CustomSmarty.class.php" />
+    <Compile Include="src\OnionSkin\Entities\Folder.class.php" />
     <Compile Include="src\OnionSkin\Entities\Snippet.class.php" />
     <Compile Include="src\OnionSkin\Entities\User.class.php" />
+    <Compile Include="src\OnionSkin\Exceptions\ErrorModel.php" />
+    <Compile Include="src\OnionSkin\Exceptions\ValidationException.class.php" />
+    <Compile Include="src\OnionSkin\Models\LoginModel.class.php" />
+    <Compile Include="src\OnionSkin\Models\RegisterModel.class.php" />
     <Compile Include="src\OnionSkin\Pages\EditPage.class.php" />
+    <Compile Include="src\OnionSkin\Pages\LoginPage.php" />
     <Compile Include="src\OnionSkin\Pages\LogoutPage.class.php" />
-    <Compile Include="src\OnionSkin\Bootstrap.class.php" />
-    <Compile Include="src\OnionSkin\DBContext.class.php" />
+    <Compile Include="src\OnionSkin\Engine.class.php" />
     <Compile Include="src\OnionSkin\Lang.class.php" />
     <Compile Include="src\OnionSkin\Page.class.php" />
+    <Compile Include="src\OnionSkin\Routing\Route.class.php" />
+    <Compile Include="src\OnionSkin\Routing\Router.class.php" />
+    <Compile Include="src\OnionSkin\Routing\Request.class.php" />
+    <Compile Include="src\OnionSkin\Routing\URL.class.php" />
     <Compile Include="src\OnionSkin\UtilsINI.class.php" />
-    <Compile Include="styles\colorDark.less" />
-    <Compile Include="styles\colorLight.less" />
-    <Compile Include="styles\colorMain.less" />
-    <Compile Include="styles\main.less" />
-    <Compile Include="styles\styleLight.css" />
-    <Compile Include="styles\styleMain.css" />
-    <Compile Include="templates\install\database.tpl" />
-    <Compile Include="templates\main\NoteNew.tpl" />
+    <Compile Include="templates\main\NoteEdit.tpl" />
     <Compile Include="templates\main\NoteView.tpl" />
-    <Compile Include="templates\@40layout.tpl" />
-    <Compile Include="templates\@40layoutInstall.tpl" />
-    <Compile Include="templates\@40styleDark.tpl" />
-    <Compile Include="templates\@40styleLight.tpl" />
-    <Compile Include="templates\@40styleMain.tpl" />
     <Compile Include="templates_c\36b437035cbc93f2b6957aceb8752e4387d36df6_0.file.@40styleLight.tpl.cache.php" />
     <Compile Include="templates_c\c3ab73c3ec3540588b0b5314f615c309d90aabb1_0.file.database.tpl.cache.php" />
     <Compile Include="templates_c\ebd6527cd244774e6ff00d65809aa4319007b949_0.file.@40layoutInstall.tpl.cache.php" />
@@ -61,23 +66,38 @@
     <Folder Include="documentation\cz" />
     <Folder Include="documentation\en" />
     <Folder Include="documentation" />
+    <Folder Include="js\" />
     <Folder Include="lang" />
     <Folder Include="libs" />
     <Folder Include="src\OnionSkin\Entities" />
+    <Folder Include="src\OnionSkin\Exceptions\" />
+    <Folder Include="src\OnionSkin\Models\" />
+    <Folder Include="src\OnionSkin\Routing\" />
     <Folder Include="src\OnionSkin\Pages" />
     <Folder Include="src\OnionSkin" />
     <Folder Include="src" />
+    <Folder Include="src\OnionSkin\Annotations\" />
     <Folder Include="styles" />
-    <Folder Include="templates\install" />
+    <Folder Include="styles\onionskin\" />
     <Folder Include="templates\main" />
     <Folder Include="templates" />
+    <Folder Include="templates\login\" />
     <Folder Include="templates_c" />
   </ItemGroup>
   <ItemGroup>
     <Content Include=".htaccess" />
     <Content Include="composer.json" />
-    <Content Include="styles\colorDark.scss" />
+    <Content Include="config\languages.json" />
+    <Content Include="config\router.ini" />
+    <Content Include="js\textarea_autogrown.js" />
     <Content Include="styles\colorLight.scss" />
-    <Content Include="styles\colorMain.scss" />
+    <Content Include="styles\onionskin\textarea_autogrow.scss" />
+    <Content Include="templates\login\LoginRegister.tpl" />
+    <Content Include="templates\_centered.tpl" />
+    <Content Include="templates\_layout.tpl" />
+    <Content Include="templates\_layoutBase.tpl" />
+    <Content Include="templates\_styleDark.tpl" />
+    <Content Include="templates\_layoutLight.tpl" />
+    <Content Include="templates\_styleMain.tpl" />
   </ItemGroup>
 </Project>

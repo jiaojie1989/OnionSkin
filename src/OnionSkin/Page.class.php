@@ -19,7 +19,7 @@ class Page {
 	}
 	protected function ok($page)
 	{
-		Bootstrap::$Smarty->display($page);
+		Engine::$Smarty->display($page);
 		die;
 	}
     public function execute(){}

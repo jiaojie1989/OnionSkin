@@ -17,30 +17,38 @@ class EditPage extends \OnionSkin\Page
 		switch($this->req_metod())
 		{
 			case "POST":
-				switch($this->req_accept())
-				{
-					case "*/*":
-					default:
-						break;
-					case "application/json":
-				
-					break;
-				}
-				break;
+                return $this->create();
 			case "GET":
 				return $this->get();
 			case "PATCH":
 			case "PUT":
 				return $this->update();
 			case "DELETE":
-			
+                return $this->remove();
+
 		}
         return $this->get();
 	}
-	
+
 	private function get()
 	{
-        $this->ok("main/NoteNew.tpl");
+        $this->loadSyntax();
+        $this->ok("main/NoteEdit.tpl");
         return true;
 	}
+    private function create()
+    {
+        $this->redirect("");
+    }
+
+    private function getModel()
+    {
+        $errors = array();
+        $model = new \OnionSkin\Entities\Snippet();
+    }
+    private function loadSyntax()
+    {
+        $syntax=json_decode(file_get_contents("config/languages.json"));
+        \OnionSkin\Engine::$Smarty->assign("syntax_list",$syntax);
+    }
 }

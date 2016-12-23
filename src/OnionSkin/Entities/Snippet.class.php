@@ -3,7 +3,7 @@
 namespace OnionSkin\Entities;
 
 /**
- * @Entity 
+ * @Entity
  * @Table(name="snippets")
  * @HasLifecycleCallbacks
  */
@@ -16,36 +16,32 @@ class Snippet
      * @GeneratedValue(strategy="IDENTITY")
      * @Column(type="integer", name="snippet_id", nullable=false, options = {"unsigned"=true})
      */
-	private $id;
+	public $id;
 	/**
 	 * @Column(type="string", length=128, nullable=false)
 	 */
-	private $title;
+	public $title;
 	/**
      * @Column(type="string", length=4294967295, nullable=false)
 	 */
-	private $text;
+	public $text;
 	/**
 	 * @Column(type="datetime",name="date_added",nullable=false)
 	 */
-	private $createdTime;
+	public $createdTime;
 	/**
 	 * @Column(type="datetime",name="date_modified",nullable=false)
 	 */
-	private $modifiedTime;
+	public $modifiedTime;
 	/**
-     * @Column(type="binary", length=3)
+     * @Column(type="binary", length=2)
 	 */
-	private $accessLevel;
+	public $accessLevel;
 
 	/**
-	 * @ManyToOne(targetEntity="Category", fetch="LAZY")
+	 * @ManyToOne(targetEntity="Folder", fetch="LAZY",nullable=false)
 	 */
-	private $category;
-	/**
-	 * @ManyToOne(targetEntity="User", fetch="LAZY")
-	 */
-	private $user;
+	public $folder;
 
     /**
      * @PrePersist
@@ -61,5 +57,38 @@ class Snippet
     public function onPreUpdateSetDateTime()
     {
         $this->modifiedTime=new \DateTime();
+    }
+
+    /**
+     * @PrePersist
+     * @PreUpdate
+     */
+    public function validate()
+    {
+        $errors=new \OnionSkin\Exceptions\ErrorModel();
+        if(!is_int($this->id) && !is_null($this->id))
+            $errors->addError(true,"id","","ID is of type:"+gettype($this->id));
+
+        if(is_null($this->title))
+            $errors->addError(false,"title","errorTitleNull");
+        elseif(!is_string($this->title))
+            $errors->addError(false,"title","errorTitleNotString");
+        elseif(strlen($this->title)>128)
+            $errors->addError(false,"title","errorTitleLenght");
+
+        if(is_null($this->text))
+            $errors->addError(false,"text","errorTextNull");
+        elseif(!is_string($this->text))
+            $errors->addError(false,"text","errorTextNotString");
+        elseif(strlen($this->text)>4294967295)
+            $errors->addError(false,"text","errorTextLenght");
+
+        if($this->accessLevel !=01 && $this->accessLevel !=10 && $this->accessLevel!=00)
+            $errors->addError(false,"accessLevel","errorAccessLevel");
+
+
+
+        if($errors->hasErrors())
+            throw new \OnionSkin\Exceptions\ValidationException($errors,"Errors during validation of snippet");
     }
 }
