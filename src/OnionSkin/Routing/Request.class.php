@@ -47,9 +47,14 @@ namespace OnionSkin\Routing
             $request->AcceptLanguages=$_SERVER['HTTP_ACCEPT_LANGUAGE'];
             $request->Accept=$_SERVER['HTTP_ACCEPT'];
             $request->ContentType=$_SERVER["CONTENT_TYPE"];
-            $route = Router::getRouteForPath($request->Path);
-            
-
+            $request->GET=$_GET;
+            $request->POST=$_POST;
+            return $request;
+        }
+        public function Execute()
+        {
+            $mtd=strtolower($this->Method);
+            $this->Page->{$mtd}($this);
         }
 	}
 }

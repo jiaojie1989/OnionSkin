@@ -24,6 +24,11 @@ class Page {
 	}
     public function execute(){}
 
+    public function get($request){}
+    public function post($request){}
+    public function put($request){}
+    public function remove($request){}
+
 	public static function resolve($page)
 	{
 		$Page = null;

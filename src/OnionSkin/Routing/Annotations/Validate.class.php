@@ -1,6 +1,6 @@
 <?php
 
-namespace OnionSkin\Annotations
+namespace OnionSkin\Routing\Annotations
 {
 	/**
      * @Annotation

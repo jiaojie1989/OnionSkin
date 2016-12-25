@@ -28,7 +28,7 @@ class Engine
 			require_once($url);
 	}
 
-	public static function init()
+	public static function Init()
 	{
 		spl_autoload_register("OnionSkin\Engine::autoload");
 		if(func_num_args()>0)
@@ -42,7 +42,7 @@ class Engine
 		self::$Config=$CONFIG;
 		self::$Smarty = new CustomSmarty();
 		self::$User = $_SESSION["User"];
-		self::$Page = Page::resolve(self::sanitize($_GET["url"]));
+        Routing\Router::Register("config/router.ini");
 	}
 
 
@@ -54,7 +54,7 @@ class Engine
 		return trim(stripslashes(htmlspecialchars($var)));
 	}
 
-	public static function debug($var)
+	public static function Debug($var)
 	{
 		self::$debug = $var;
 		if($var)
@@ -72,14 +72,10 @@ class Engine
 	}
 
 
-	public static function execute()
+	public static function Execute($request)
 	{
-		if(!self::checkRights())
-			self::fail(403);
-
-        $Page = self::$Page;
-		$Page->execute();
-
+        Routing\Router::Route($request);
+        $request->Execute();
 	}
 
 	static function fail($code)
@@ -87,7 +83,7 @@ class Engine
 		die;
 	}
 
-	public static function  bakeCss()
+	public static function  BakeCss()
 	{
         $scss = new \Leafo\ScssPhp\Compiler();
         $scss->setLineNumberStyle(\Leafo\ScssPhp\Compiler::LINE_COMMENTS);
@@ -104,7 +100,7 @@ class Engine
 			self::fail(502,$e->getMessage());
 		}
 	}
-    public static function bakeJs()
+    public static function BakeJs()
     {
         if (!file_exists('js_c'))
             mkdir('js_c', 0777, true);
@@ -118,7 +114,7 @@ class Engine
         $mimify->add("js/textarea_autogrown.js");
         $mimify->minify("js_c/editor.js");
     }
-    public static function bakeLanguageTypes()
+    public static function BakeLanguageTypes()
     {
         $files=scandir("languages/");
         chmod("languages",0777);

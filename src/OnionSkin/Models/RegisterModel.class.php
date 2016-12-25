@@ -2,6 +2,10 @@
 
 namespace OnionSkin\Models
 {
+    use OnionSkin\Routing\Annotations\Post;
+    use OnionSkin\Routing\Annotations\Required;
+    use OnionSkin\Routing\Annotations\StringLength;
+    use OnionSkin\Routing\Annotations\Validate;
 	/**
 	 * RegisterModel short summary.
 	 *

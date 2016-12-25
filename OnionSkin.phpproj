@@ -26,11 +26,13 @@
     <Compile Include="config\configuration.ini" />
     <Compile Include="config\README.md" />
     <Compile Include="lang\lang.cz.ini" />
-    <Compile Include="src\OnionSkin\Annotations\Get.class.php" />
-    <Compile Include="src\OnionSkin\Annotations\Path.class.php" />
-    <Compile Include="src\OnionSkin\Annotations\Post.class.php" />
-    <Compile Include="src\OnionSkin\Annotations\StringLength.class.php" />
-    <Compile Include="src\OnionSkin\Annotations\Validate.class.php" />
+    <Compile Include="src\OnionSkin\Routing\Annotations\Get.class.php" />
+    <Compile Include="src\OnionSkin\Routing\Annotations\NumericRange.class.php" />
+    <Compile Include="src\OnionSkin\Routing\Annotations\Path.class.php" />
+    <Compile Include="src\OnionSkin\Routing\Annotations\Post.class.php" />
+    <Compile Include="src\OnionSkin\Routing\Annotations\Required.class.php" />
+    <Compile Include="src\OnionSkin\Routing\Annotations\StringLength.class.php" />
+    <Compile Include="src\OnionSkin\Routing\Annotations\Validate.class.php" />
     <Compile Include="src\OnionSkin\CustomSmarty.class.php" />
     <Compile Include="src\OnionSkin\Entities\Folder.class.php" />
     <Compile Include="src\OnionSkin\Entities\Snippet.class.php" />
@@ -48,7 +50,7 @@
     <Compile Include="src\OnionSkin\Routing\Route.class.php" />
     <Compile Include="src\OnionSkin\Routing\Router.class.php" />
     <Compile Include="src\OnionSkin\Routing\Request.class.php" />
-    <Compile Include="src\OnionSkin\Routing\URL.class.php" />
+    <Compile Include="src\OnionSkin\Routing\MappedModel.class.php" />
     <Compile Include="src\OnionSkin\UtilsINI.class.php" />
     <Compile Include="templates\main\NoteEdit.tpl" />
     <Compile Include="templates\main\NoteView.tpl" />
@@ -79,7 +81,7 @@
     <Folder Include="src\OnionSkin\Pages" />
     <Folder Include="src\OnionSkin" />
     <Folder Include="src" />
-    <Folder Include="src\OnionSkin\Annotations\" />
+    <Folder Include="src\OnionSkin\Routing\Annotations\" />
     <Folder Include="styles" />
     <Folder Include="styles\onionskin\" />
     <Folder Include="templates\main" />
