@@ -14,8 +14,9 @@ namespace OnionSkin\Models
 	 * @version 1.0
 	 * @author Fry
 	 */
-	class RegisterModel
+	class RegisterModel extends Model
 	{
+
         /**
          * @var string
          * @Validate(type="string", errorLangCode="errorNotString")

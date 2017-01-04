@@ -1,17 +1,42 @@
 <?php
 
-namespace OnionSkin\Routing
+namespace OnionSkin\Models
 {
-	/**
-	 * URL short summary.
-	 *
-	 * URL description.
-	 *
-	 * @version 1.0
-	 * @author Fry
-	 */
-	class MappedModel
-	{
+    /**
+     * Model short summary.
+     *
+     * Model description.
+     *
+     * @version 1.0
+     * @author Fry
+     */
+    abstract class Model
+    {
+        public $Page;
+
+        public $AntiForgetoryToken;
+
+        function __construct($Page) {
+            $this->Page=$Page;
+        }
+        public function validateAntiForgetoryToken($Page)
+        {
+            $this->AntiForgetoryToken=$_POST["csrf_token"];
+            if(!isset($_SESSION["csrf"]))
+                return false;
+            foreach($_SESSION["csrf"] as $key=>$csrf)
+            {
+                if($csrf["validity"]<time())
+                    unset($_SESSION["csrf"][$key]);
+                if($this->Page==$Page && $this->AntiForgetoryToken==$csrf["token"])
+                {
+                    unset($_SESSION["csrf"][$key]);
+                    return true;
+                }
+            }
+            return false;
+        }
+
         /**
          * @var \Doctrine\Common\Annotations\CachedReader
          */
@@ -19,9 +44,9 @@ namespace OnionSkin\Routing
 
         /**
          * @param mixed $model
-         * @param Request $request
+         * @param \OnionSkin\Routing\Request $request
          */
-        public static function MapModel($request)
+        public static function MapRequest($request)
         {
             if(is_null(self::$reader))
             {
@@ -39,7 +64,7 @@ namespace OnionSkin\Routing
         /**
          * @param mixed $model
          * @param \ReflectionProperty $param
-         * @param Request $request
+         * @param \OnionSkin\Routing\Request $request
          */
         private static function paramLoad($model,$param,$request)
         {
@@ -63,7 +88,7 @@ namespace OnionSkin\Routing
         /**
          * @param mixed $model
          * @param \ReflectionProperty $param
-         * @param Request $request
+         * @param \OnionSkin\Routing\Request $request
          */
         private static function paramValidation($model,$param,$request)
         {
@@ -101,5 +126,6 @@ namespace OnionSkin\Routing
             return true;
         }
 
-	}
+    }
+
 }

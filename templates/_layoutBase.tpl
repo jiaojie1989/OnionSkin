@@ -20,19 +20,19 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="#">Public snippets</a></li>
+        <li><a href="#">{$L.public_snippets}</a></li>
 			{if isset($logged) && $logged}
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My snippets <span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{$L.my_snippets} <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#">Folders</a></li>
-            <li><a href="#">File type</a></li>
+            <li><a href="#">{$L.folders}</a></li>
+            <li><a href="#">{$L.file_types}</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="#">Display all</a></li>
+            <li><a href="#">{$L.display_all}</a></li>
           </ul>
         </li>
 		  {/if}
-        <li><button type="button" class="btn btn-default navbar-btn">Create new snippet</button></li>
+        <li><p class="navbar-btn"><a class="btn btn-default" href="{$R->Path("EditPage")}">{$L.create_new_snippet}</a></p></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
 		
@@ -46,14 +46,14 @@
           </ul>
         </li>
 			{else}
-        <li><button type="button" class="btn btn-default navbar-btn">{$L.login}</button></li>
+        <li><p class="navbar-btn"><a class="btn btn-default" href="{$R->Path("Profile\LoginPage")}">{$L.login}</a></p></li>
 			{/if}
       </ul>
-      <form class="navbar-form navbar-right">
+      <form class="navbar-form navbar-right" action="{$R->Path("SearchPage")}">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+          <input type="text" class="form-control" placeholder="{$L.search}">
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <button type="submit" class="btn btn-default"> <span class="glyphicon glyphicon-search"></span></button>
       </form>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

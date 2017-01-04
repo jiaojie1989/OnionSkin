@@ -78,10 +78,7 @@ namespace OnionSkin\Routing
         }
         public function path($vars=null)
         {
-            $path=$this->paths[0]->path;
-            foreach($vars as $var)
-                $path=preg_replace("/\{[a-zA-Z0-9:]*\}/",$var,$path,1);
-            return $path;
+            return $this->paths[0]->getPath($vars); //TODO: In future rewrite to choosing appropriate path from paths.
         }
 
 	}
@@ -109,6 +106,14 @@ namespace OnionSkin\Routing
             $this->pathRegex=preg_replace("/\{[a-zA-Z0-9:]*\}/","([^\/]*)",$this->pathRegex);
         }
 
+        public function getPath($vars=null)
+        {
+            $path=$this->path;
+            if(!is_null($vars))
+                foreach($vars as $var)
+                    $path=preg_replace("/\{[a-zA-Z0-9:]*\}/",$var,$path,1);
+            return $path;
+        }
         /**
          * @param Request request
          */

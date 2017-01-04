@@ -26,6 +26,8 @@
     <Compile Include="config\configuration.ini" />
     <Compile Include="config\README.md" />
     <Compile Include="lang\lang.cz.ini" />
+    <Compile Include="src\OnionSkin\Models\Model.class.php" />
+    <Compile Include="src\OnionSkin\Models\SearchModel.class.php" />
     <Compile Include="src\OnionSkin\Routing\Annotations\Get.class.php" />
     <Compile Include="src\OnionSkin\Routing\Annotations\NumericRange.class.php" />
     <Compile Include="src\OnionSkin\Routing\Annotations\Path.class.php" />
@@ -42,15 +44,14 @@
     <Compile Include="src\OnionSkin\Models\LoginModel.class.php" />
     <Compile Include="src\OnionSkin\Models\RegisterModel.class.php" />
     <Compile Include="src\OnionSkin\Pages\EditPage.class.php" />
-    <Compile Include="src\OnionSkin\Pages\LoginPage.class.php" />
-    <Compile Include="src\OnionSkin\Pages\LogoutPage.class.php" />
+    <Compile Include="src\OnionSkin\Pages\Profile\LoginPage.class.php" />
+    <Compile Include="src\OnionSkin\Pages\Profile\LogoutPage.class.php" />
     <Compile Include="src\OnionSkin\Engine.class.php" />
     <Compile Include="src\OnionSkin\Lang.class.php" />
     <Compile Include="src\OnionSkin\Page.class.php" />
     <Compile Include="src\OnionSkin\Routing\Route.class.php" />
     <Compile Include="src\OnionSkin\Routing\Router.class.php" />
     <Compile Include="src\OnionSkin\Routing\Request.class.php" />
-    <Compile Include="src\OnionSkin\Routing\MappedModel.class.php" />
     <Compile Include="src\OnionSkin\UtilsINI.class.php" />
     <Compile Include="templates\main\NoteEdit.tpl" />
     <Compile Include="templates\main\NoteView.tpl" />
@@ -77,6 +78,7 @@
     <Folder Include="src\OnionSkin\Entities" />
     <Folder Include="src\OnionSkin\Exceptions\" />
     <Folder Include="src\OnionSkin\Models\" />
+    <Folder Include="src\OnionSkin\Pages\Profile\" />
     <Folder Include="src\OnionSkin\Routing\" />
     <Folder Include="src\OnionSkin\Pages" />
     <Folder Include="src\OnionSkin" />
@@ -94,8 +96,10 @@
     <Content Include="composer.json" />
     <Content Include="config\languages.json" />
     <Content Include="config\router.ini" />
+    <Content Include="js\loginpanel.js" />
     <Content Include="js\textarea_autogrown.js" />
     <Content Include="styles\colorLight.scss" />
+    <Content Include="styles\onionskin\loginpanel.scss" />
     <Content Include="styles\onionskin\textarea_autogrow.scss" />
     <Content Include="templates\login\LoginRegister.tpl" />
     <Content Include="templates\_centered.tpl" />

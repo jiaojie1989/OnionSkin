@@ -1,7 +1,7 @@
 <?php
 
 
-namespace OnionSkin\Pages
+namespace OnionSkin\Pages\Profile
 {
 	/**
      * LoginPage short summary.

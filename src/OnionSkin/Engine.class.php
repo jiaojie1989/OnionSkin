@@ -100,6 +100,13 @@ class Engine
 		} catch (exception $e) {
 			self::fail(502,$e->getMessage());
 		}
+        if (!file_exists('fonts/bootstrap'))
+            mkdir("fonts/bootstrap",0777,true);
+        copy("vendor/twbs/bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-regular.eot","fonts/bootstrap/glyphicons-halflings-regular.eot");
+        copy("vendor/twbs/bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-regular.svg","fonts/bootstrap/glyphicons-halflings-regular.svg");
+        copy("vendor/twbs/bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-regular.ttf","fonts/bootstrap/glyphicons-halflings-regular.ttf");
+        copy("vendor/twbs/bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-regular.woff","fonts/bootstrap/glyphicons-halflings-regular.woff");
+        copy("vendor/twbs/bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-regular.woff2","fonts/bootstrap/glyphicons-halflings-regular.woff2");
 	}
     public static function BakeJs()
     {
@@ -114,6 +121,9 @@ class Engine
         $mimify = new \MatthiasMullie\Minify\JS();
         $mimify->add("js/textarea_autogrown.js");
         $mimify->minify("js_c/editor.js");
+        $mimify = new \MatthiasMullie\Minify\JS();
+        $mimify->add("js/loginpanel.js");
+        $mimify->minify("js_c/login.js");
     }
     public static function BakeLanguageTypes()
     {
