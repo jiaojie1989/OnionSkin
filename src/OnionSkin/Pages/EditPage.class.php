@@ -30,7 +30,7 @@ class EditPage extends \OnionSkin\Page
         return $this->get();
 	}
 
-	private function get()
+	public function get($request)
 	{
         $this->loadSyntax();
         $this->ok("main/NoteEdit.tpl");

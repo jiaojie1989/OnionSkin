@@ -33,18 +33,36 @@ namespace OnionSkin\Routing
         {
 
         }
+
+        public static function Path($page, $vars=null)
+        {
+            if(is_string($page))
+                foreach(self::$routes as $route)
+                {
+                    if($route->getPage()==$page)
+                        return $route->path($vars);
+
+                }
+            elseif(is_object($page))
+                foreach(self::$routes as $route)
+                {
+                    if($route->getPage()==get_class($page))
+                        return $route->path($vars);
+                }
+            return null;
+        }
         public static function Route($request)
         {
-            if(is_null($request->path))
-                $request->Path="/";
+            if(is_null($request->Path))
+                $request->Path="";
             foreach(self::$routes as $route)
             {
                 if($route->valide($request))
                 {
-                    if(!$route->route($request))
+                    if($route->route($request))
                     {
+                        return;
                     }
-                    return;
                 }
             }
         }

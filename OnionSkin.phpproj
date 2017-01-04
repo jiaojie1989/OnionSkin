@@ -11,7 +11,7 @@
     <SaveServerSettingsInUserFile>false</SaveServerSettingsInUserFile>
     <Runtime>PHP</Runtime>
     <RuntimeVersion>7.0</RuntimeVersion>
-    <EnvName>PHPDev</EnvName>
+    <EnvName>IISExpress</EnvName>
     <PHPDevHostName>localhost</PHPDevHostName>
     <PHPDevAutoPort>true</PHPDevAutoPort>
   </PropertyGroup>
@@ -42,7 +42,7 @@
     <Compile Include="src\OnionSkin\Models\LoginModel.class.php" />
     <Compile Include="src\OnionSkin\Models\RegisterModel.class.php" />
     <Compile Include="src\OnionSkin\Pages\EditPage.class.php" />
-    <Compile Include="src\OnionSkin\Pages\LoginPage.php" />
+    <Compile Include="src\OnionSkin\Pages\LoginPage.class.php" />
     <Compile Include="src\OnionSkin\Pages\LogoutPage.class.php" />
     <Compile Include="src\OnionSkin\Engine.class.php" />
     <Compile Include="src\OnionSkin\Lang.class.php" />
@@ -104,5 +104,6 @@
     <Content Include="templates\_styleDark.tpl" />
     <Content Include="templates\_layoutLight.tpl" />
     <Content Include="templates\_styleMain.tpl" />
+    <Content Include="web.config" />
   </ItemGroup>
 </Project>

@@ -41,7 +41,8 @@ class Engine
         $CONFIG["Database"]=null;
 		self::$Config=$CONFIG;
 		self::$Smarty = new CustomSmarty();
-		self::$User = $_SESSION["User"];
+        if(isset($_SESSION["User"]))
+		    self::$User = $_SESSION["User"];
         Routing\Router::Register("config/router.ini");
 	}
 

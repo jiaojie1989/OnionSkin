@@ -21,12 +21,18 @@ namespace OnionSkin\Routing
         private $page;
         private $model;
 
+        public function getPage()
+        {
+            return $this->page;
+        }
+
         public function __construct($data)
         {
             $this->methods=explode(";",$data["methods"]);
             foreach(explode(";",$data["paths"]) as $pa)
                 $this->paths[]=new RoutePath($pa);
-            $this->model=$data["model"];
+            if(isset($data["model"]))
+                $this->model=$data["model"];
             $this->page=$data["page"];
         }
 
@@ -64,10 +70,18 @@ namespace OnionSkin\Routing
                             $request->MappedModel=new $this->model;
                             MappedModel::MapModel($request);
                         }
+                        return true;
                     }
                 }
             }
             return false;
+        }
+        public function path($vars=null)
+        {
+            $path=$this->paths[0]->path;
+            foreach($vars as $var)
+                $path=preg_replace("/\{[a-zA-Z0-9:]*\}/",$var,$path,1);
+            return $path;
         }
 
 	}
@@ -85,20 +99,27 @@ namespace OnionSkin\Routing
             $par=array();
             preg_match_all("/\{[a-zA-Z0-9:]*\}/",$path,$par);
             foreach($par as $p)
-                $this->params[]=new RoutePathParameter($p);
+                if(sizeof($p)>0)
+                    foreach($p as $pp)
+                    $this->params[]=new RoutePathParameter($pp);
             $this->path=$path;
             $this->pathRegex=$path;
             $this->pathRegex="/^".addcslashes($this->pathRegex,'/')."$/";
+            //$this->pathRegex="/^".$this->pathRegex."$/";
             $this->pathRegex=preg_replace("/\{[a-zA-Z0-9:]*\}/","([^\/]*)",$this->pathRegex);
         }
 
+        /**
+         * @param Request request
+         */
         public function valide($request)
         {
             $par=array();
-            preg_match_all($this->pathRegex,$path,$par);
+            if(preg_match_all($this->pathRegex,$request->Path,$par)==0)
+                return false;
             if(sizeof($par)-1!=sizeof($this->params))
                 return false;
-            for($i=0;$i<sizeof($par);$i++)
+            for($i=0;$i<sizeof($par)-1;$i++)
                 if(!$this->params[$i]->valide($par[$i+1]))
                     return false;
             return true;

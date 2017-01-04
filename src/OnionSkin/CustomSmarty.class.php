@@ -26,4 +26,15 @@ namespace OnionSkin
         }
 
 	}
+    class RouterPlugin
+    {
+        public function Path($page,$vars=null)
+        {
+            
+        }
+        public function Route()
+        {
+            
+        }
+    }
 }

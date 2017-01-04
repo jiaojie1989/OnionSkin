@@ -39,7 +39,7 @@ namespace OnionSkin\Pages
             return $this->get();
         }
 
-        private function get()
+        public function get($request)
         {
             $this->ok("login/LoginRegister.tpl");
             return true;
