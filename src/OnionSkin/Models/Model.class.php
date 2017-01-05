@@ -28,7 +28,7 @@ namespace OnionSkin\Models
             {
                 if($csrf["validity"]<time())
                     unset($_SESSION["csrf"][$key]);
-                if($this->Page==$Page && $this->AntiForgetoryToken==$csrf["token"])
+                if($this->Page==$csrf["page"] && $this->AntiForgetoryToken==$csrf["token"])
                 {
                     unset($_SESSION["csrf"][$key]);
                     return true;
