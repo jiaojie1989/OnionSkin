@@ -61,7 +61,11 @@ namespace OnionSkin
             if(!isset($_SESSION["csrf"]))
                 $_SESSION["csrf"]=array();
             $token=bin2hex(random_bytes(32));
+<<<<<<< HEAD
             $_SESSION["csrf"][]= array("page"=>$this->page, "token"=>$token, "validity"=>time()+60*30);
+=======
+            $_SESSION["csrf"][]= array("page"=>get_class($Page), "token"=>$token, "validity"=>time()+60*180);
+>>>>>>> origin/develop
             return '<input type="hidden" name="csrf_token" value="'.$token.'" />';
         }
         public function BindModel($Model)
