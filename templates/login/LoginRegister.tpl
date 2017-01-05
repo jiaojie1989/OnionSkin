@@ -19,24 +19,13 @@
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-lg-12">
-								<form id="login-form" action="{$R->Path("Profile\\LoginPage")}" method="post" role="form" style="display: block;">
-									<div class="form-group">
-										<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="{$L.username}" value="">
-									</div>
-									<div class="form-group">
-										<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="{$L.password}">
-									</div>
-									<div class="form-group text-center">
-										<input type="checkbox" tabindex="3" class="" name="remember" id="remember">
-										<label for="remember"> {$L.remember_me}</label>
-									</div>
-									<div class="form-group">
-										<div class="row">
-											<div class="col-sm-6 col-sm-offset-3">
-												<input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="{$L.sign_in}">
-											</div>
-										</div>
-									</div>
+								{$Form->Start("login-form","Profile\\LoginPage","post",["style"=>"display: block;", "role"=>"form"])}
+								{$Form->BindModel($Request->MappedModel)}
+								{$Form->AntiForgeryToken()}
+								{$Form->TextBox("username",null,$L.username,["input"=>["tabindex"=>"1","required"=>"required","pattern"=>$H->cat([".",$ldim,"6,",$rdim]),"title"=>$L.six_character_minimal]])}
+								{$Form->Password("password",null,$L.password,["input"=>["tabindex"=>"2","required"=>"required","pattern"=>$H->cat(["(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).",$ldim,"8,",$rdim]),"title"=>$L.password_pattern]])}
+								{$Form->CheckBox("rememberme",$L.remember_me,["wrapper"=>["class"=>"text-center"],"input"=>["tabindex"=>"3"]])}
+								{$Form->Submit("login-submit",$L.sign_in,["style"=>"button_middle","input"=>["tabindex"=>"4","class"=>"btn-login"]])}
 									<div class="form-group">
 										<div class="row">
 											<div class="col-lg-12">
@@ -46,7 +35,16 @@
 											</div>
 										</div>
 									</div>
-								</form>
+								{$Form->End()}
+								{$Form->Start("register-form","Profile\\RegisterPage","post", ["role"=>"form","style"=>"display: none;"])}
+								{$Form->BindModel($Request->MappedModel)}
+								{$Form->AntiForgeryToken()}
+								{$Form->TextBox("username",null,$L.username,["input"=>["tabindex"=>"1","required"=>"required","pattern"=>$H->cat([".",$ldim,"6,",$rdim]),"title"=>$L.six_character_minimal]])}
+								{$Form->Email("email",null,$L.email,["input"=>["tabindex"=>"2","required"=>"required"]])}
+								{$Form->Password("password",null,$L.password,["input"=>["tabindex"=>"3","required"=>"required","pattern"=>$H->cat(["(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).",$ldim,"8,",$rdim]),"title"=>$L.password_pattern]])}
+								{$Form->Password("password",null,$L.password_confirm,["input"=>["tabindex"=>"4","required"=>"required","pattern"=>$H->cat(["(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).",$ldim,"8,",$rdim]),"title"=>$L.password_pattern]])}
+								{$Form->Submit("register-submit",$L.sign_up,["style"=>"button_middle","input"=>["tabindex"=>"5","class"=>"btn-register"]])}
+								{$Form->End()}
 								<form id="register-form" action="{$R->Path("Profile\\RegisterPage")}" method="post" role="form" style="display: none;">
 									<div class="form-group">
 										<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="{$L.username}" value="">

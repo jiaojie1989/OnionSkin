@@ -54,6 +54,7 @@ namespace OnionSkin\Routing
         public function Execute()
         {
             $mtd=strtolower($this->Method);
+            \OnionSkin\Engine::$Smarty->assign("Request",$this);
             $this->Page->{$mtd}($this);
         }
 	}
