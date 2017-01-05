@@ -54,28 +54,53 @@ namespace OnionSkin
     }
     class FormPlugin
     {
+        /**
+         * Summary of $page
+         * @var \OnionSkin\Page
+         */
         private $page;
+        /**
+         * Summary of $model
+         * @var \OnionSkin\Models\Model
+         */
         private $model;
+        /**
+         * Summary of $method
+         * @var string
+         */
+        private $method;
+        /**
+         * Summary of AntiForgeryToken
+         * @return string
+         */
         public function AntiForgeryToken()
         {
             if(!isset($_SESSION["csrf"]))
                 $_SESSION["csrf"]=array();
             $token=bin2hex(random_bytes(32));
-<<<<<<< HEAD
             $_SESSION["csrf"][]= array("page"=>$this->page, "token"=>$token, "validity"=>time()+60*30);
-=======
-            $_SESSION["csrf"][]= array("page"=>get_class($Page), "token"=>$token, "validity"=>time()+60*180);
->>>>>>> origin/develop
             return '<input type="hidden" name="csrf_token" value="'.$token.'" />';
         }
+        /**
+         *
+         * @param \OnionSkin\Models\Model $Model
+         */
         public function BindModel($Model)
         {
+            if($Model->Page==$this->page)
             $this->model=$Model;
         }
-
+        /**
+         * @param string $id
+         * @param string $Page
+         * @param string $method
+         * @param array $attr
+         * @return string
+         */
         public function Start($id,$Page,$method,$attr=null)
         {
             $this->page="\\OnionSkin\\Pages\\".$Page;
+            $this->method=$method;
             $ret='<form id="'.$id.'" action="'.Routing\Router::Path($this->page).'" method="'.$method.'"';
             if(is_array($attr))
                 foreach($attr as $key=>$value)
@@ -83,10 +108,15 @@ namespace OnionSkin
 
             return $ret.'>';
         }
+        /**
+         * Summary of End
+         * @return string
+         */
         public function End()
         {
             $this->page=null;
             $this->model=null;
+            $this->method=null;
             return "</form>";
         }
         public function TextBox($id,$label=null,$placeholder=null,$data=array())
@@ -106,6 +136,7 @@ namespace OnionSkin
             $dataInput=$data["input"];
             $dataInput=$this->appendThings($dataInput,"class","form-control");
             $ret.=$this->input($id,"text",$placeholder,$dataInput);
+
 
             $ret.=$this->divEnd();
             return $ret;
@@ -212,7 +243,7 @@ namespace OnionSkin
             return "</div>";
         }
 
-        private function label($id,$label,$data=null)
+        private function label($id,$label,$data=array())
         {
             $ret='<label for="'.$id.'"';
             if(is_array($data))
@@ -220,8 +251,17 @@ namespace OnionSkin
                     $ret.=' '.$key.'="'.$value.'"';
             return $ret.">".$label."</label>";
         }
-        private function input($id,$type,$placeholder=null,$data=null)
+        private function input($id,$type,$placeholder=null,$data=array())
         {
+            if(isset($this->model))
+                if($this->method=="get" && isset($this->model->refGET[$id]))
+                {
+                    $data["value"]=$this->model->{$this->model->refGET[$id]};
+                }
+                elseif($this->method=="post" && isset($this->model->refPOST[$id]))
+                {
+                    $data["value"]=$this->model->{$this->model->refPOST[$id]};
+                }
             $ret='<input id="'.$id.'" name="'.$id.'" type="'.$type.'"';
             if(is_string($placeholder))
                 $ret.=' placeholder="'.$placeholder.'"';
@@ -230,6 +270,27 @@ namespace OnionSkin
                     if($key!="label" && $key!="wrapper")
                         $ret.=' '.$key.'="'.$value.'"';
             return $ret."/>";
+        }
+        private function feedback($txt,$data=array())
+        {
+            $ret="<div ";
+            $data=$this->appendThings($data,"class"," form-control-feedback");
+            foreach($data as $key=>$value)
+               if($key!="label" && $key!="wrapper")
+                  $ret.=' '.$key.'="'.$value.'"';
+            $ret.=">".$txt;
+
+            return $ret."</small>";
+        }
+        private function help($txt,$data=array())
+        {
+            $ret="<small";
+            $data=$this->appendThings($data,"class"," form-text text-muted");
+            foreach($data as $key=>$value)
+               if($key!="label" && $key!="wrapper")
+                  $ret.=' '.$key.'="'.$value.'"';
+            $ret.=">".$txt;
+            return $ret."</small>";
         }
         function appendThings(/* map[string,mixed] */ $array, /* string */ $key, /* string */ $value) {
             if(!isset($array))

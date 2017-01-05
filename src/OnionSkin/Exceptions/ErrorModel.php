@@ -12,15 +12,22 @@ namespace OnionSkin\Exceptions
 	 */
 	class ErrorModel
 	{
+        public $Severe;
+        public $LngCode;
+        public $LngParams;
+        public $Reason;
         /**
          * 
          * @param bool $severe 
          * @param string $variable 
          * @param string $lngCode 
          */
-        public function addError($severe,$variable,$lngCode,$reason=null)
+        public function __construct($severe,$lngCode,$lngParams=array(),$reason=null)
         {
-            
+            $this->Severe=$severe;
+            $this->LngCode=$lngCode;
+            $this->LngParams=$lngParams;
+            $this->Reason=$reason;
         }
 
         public function hasErrors()

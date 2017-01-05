@@ -12,22 +12,26 @@ namespace OnionSkin\Exceptions
 	 */
 	class ValidationException extends \Exception
 	{
-        public $errors;
+        /**
+         * Summary of $error
+         * @var \OnionSkin\Exceptions\ErrorModel
+         */
+        public $error;
         #region Exception Members
 
         /**
          * Construct the exception
          * Constructs the Exception.
          *
-         * @param \OnionSkin\Exceptions\ErrorModel $errors
+         * @param \OnionSkin\Exceptions\ErrorModel $error
          * @param string $message The Exception message to throw.
          * @param int $code The Exception code.
          * @param \Throwable $previous The previous exception used for the exception chaining.
          */
-        function __construct($errors,$message = "", $code = 0, $previous = NULL)
+        function __construct($error,$message = "", $code = 0, $previous = NULL)
         {
             parent::__construct($message, $code, $previous);
-            $this->errors=$errors;
+            $this->error=$error;
         }
 
         /**
