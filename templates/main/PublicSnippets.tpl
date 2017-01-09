@@ -2,8 +2,10 @@
 {block name=title}{$L.public_snippets}{/block}
 {block name="body"}
 <div class="container container-table">
+<div class="card  mb-3 mt-3">
+  <div class="card-block">
     <div class="row ">
-		<h1>{$L.public_snippets}</h1>
+		<h1 class="mt-3">{$L.public_snippets}</h1>
   <table class="table table-striped table-condensed table-hover">
     <thead>
       <tr>
@@ -25,6 +27,8 @@
     </tbody>
   </table>
 		{include file="fnc/Pagination.tpl" value=$pagination}
+		</div>
+	</div>
 		</div>
 	</div>
 {/block}

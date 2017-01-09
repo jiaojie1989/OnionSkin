@@ -3,9 +3,9 @@
 <title>{block name=title}OnionSkin{/block}</title>
 	{block name="css"}{/block}
 </head>
-<body>
+<body class="{$body_class}">
 	{block name="js_start"}{/block}
-	<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+	<nav class="navbar navbar-toggleable-md {$navbar_color}">
 		  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 			</button>
@@ -31,9 +31,9 @@
 		{if $logged}
 		<ul class="navbar-nav my-2 ml-auto my-lg-0 nav">
         <li class="nav-item dropdown"><a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-           {$user->username}</a>
+           {$L.signed_in_as} {$user->username}</a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">{$L.settings}</a>
+            <a class="dropdown-item" href="{$R->Path("Profile\SettingsPage")}">{$L.settings}</a>
 			  <div class="dropdown-divider"></div>
 			  {$Form->Start("logout","Profile\LogoutPage","post",["class"=>"form-inline dropdown-item"])}
 			  {$Form->AntiForgeryToken()}
@@ -44,8 +44,11 @@
       </ul>
 			{else}
 		
-  <form class="form-inline my-2 ml-auto my-lg-0" method="get" action="{$R->Path("Profile\LoginPage")}">
+  <form class="form-inline my-2 ml-auto mr-2 my-lg-0" method="get" action="{$R->Path("Profile\LoginPage")}">
     <button class="btn btn-sm align-middle btn-outline-success" type="submit">{$L.login}</button>
+  </form>
+  <form class="form-inline my-2 my-lg-0" method="get" action="{$R->Path("Profile\RegisterPage")}">
+    <button class="btn btn-sm align-middle btn-outline-success" type="submit">{$L.sign_up}</button>
   </form>
 			{/if}
 </nav>

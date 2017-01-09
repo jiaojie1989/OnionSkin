@@ -21,9 +21,12 @@ namespace OnionSkin\Pages\Profile
          *
          * @return void
          */
-        function get($request)
+        public function get($request)
         {
-            return parent::get($request);
+            if(Engine::$User!=null)
+                $this->redirect("@/");
+            $this->ok("login/Register.tpl");
+            return true;
         }
 
         /**

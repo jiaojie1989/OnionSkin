@@ -1,7 +1,10 @@
 {extends file="_centered.tpl"}
 {block name=title}Snippet{/block}
 {block name="innerbody"}
-<h2>{$L.newsnippet}</h2>
+
+<div class="card  mb-3 mt-3">
+  <div class="card-block">
+<h2 class="">{$L.newsnippet}</h2>
 
 <div class="container">
 	{$Form->Start("form-edit","EditPage","post",["role"=>"form","class"=>"form-horizontal"])}
@@ -27,7 +30,7 @@
 	{$Form->Select("expiration",["never"=>$L.expiration_never,"10m"=>$H->cat("10 ",$L.time_m_p),"1h"=>$H->cat("1 ",$L.time_h_s),"1d"=>$H->cat("1 ",$L.time_d_s),"1w"=>$H->cat("1 ",$L.time_w_s)],$L.expiration,["select"=>["tabindex"=>"6"]])}
 	{$Form->Button("edit_submit",$L.save,["tabindex"=>"7","class"=>"btn-success"])}
 	{$Form->End()}
-</div>
+</div></div></div>
 
 {/block}
 {block name="js_end" append}

@@ -54,7 +54,7 @@ namespace OnionSkin\Pages\Profile
         {
             if(Engine::$User!=null)
                 $this->redirect("@/");
-            $this->ok("login/LoginRegister.tpl");
+            $this->ok("login/Login.tpl");
             return true;
         }
 

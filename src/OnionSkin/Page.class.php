@@ -22,6 +22,12 @@ class Page {
 		Engine::$Smarty->display($page);
 		die;
 	}
+    protected final function json($Data,$code=200)
+    {
+        http_response_code($code);
+        echo json_encode($Data);
+        die;
+    }
 
     public final function redirect($page, $code=303,$vars=null)
     {

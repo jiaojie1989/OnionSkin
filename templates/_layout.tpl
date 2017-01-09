@@ -1,4 +1,20 @@
-{extends file="_layoutLight.tpl"}
+{extends file="_layoutBase.tpl"}
+{if !isset($user) || $user->style eq "light"}
+{assign var="navbar_color" value="navbar-light bg-faded" nocache}
+{assign var="body_class" value="" nocache}
+{block name="css" append}
+<link type="text/css" rel="stylesheet" href="/styles_c/colorLight.css" />
+<link type="text/css" rel="stylesheet" href="/styles_c/highlightjs/vs.css" />
+{/block}
+{else}
+{assign var="navbar_color" value="navbar-inverse bg-inverse" nocache}
+{assign var="body_class" value="text-white bg-inverse" nocache}
+{block name="css" append}
+<link type="text/css" rel="stylesheet" href="/styles_c/colorDark.css" />
+<link type="text/css" rel="stylesheet" href="/styles_c/highlightjs/androidstudio.css" />
+{/block}
+
+{/if}
 {block name="js_end" append}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js" integrity="sha384-THPy051/pYDQGanwU6poAc/hOdQxjnOEXzbT+OuUAFqNqFjL+4IGLBgCJC3ZOShY" crossorigin="anonymous"></script>
 <script>

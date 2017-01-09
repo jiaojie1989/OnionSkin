@@ -112,4 +112,10 @@ class Snippet
         if($errors->hasErrors())
             throw new \OnionSkin\Exceptions\ValidationException($errors,"Errors during validation of snippet");*/
     }
+
+    public function isOwner()
+    {
+        $user=\OnionSkin\Engine::$User;
+        return $this->user->id==$user->id;
+    }
 }

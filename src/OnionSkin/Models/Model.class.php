@@ -72,6 +72,7 @@ namespace OnionSkin\Models
                 AnnotationRegistry::registerFile("src/OnionSkin/Routing/Annotations/Validate.class.php");
                 AnnotationRegistry::registerFile("src/OnionSkin/Routing/Annotations/Enum.class.php");
                 AnnotationRegistry::registerFile("src/OnionSkin/Routing/Annotations/PostValidate.class.php");
+                AnnotationRegistry::registerFile("src/OnionSkin/Routing/Annotations/AllowHTML.class.php");
                 self::$reader = new \Doctrine\Common\Annotations\CachedReader(new \Doctrine\Common\Annotations\AnnotationReader(),new \Doctrine\Common\Cache\ArrayCache(),true);
             }
             $reflClass = new \ReflectionClass($request->MappedModel);
@@ -86,7 +87,7 @@ namespace OnionSkin\Models
                     foreach($val->LngParams as $key=>$value)
                         $r=str_replace('{'.$key.'}',$value,$r);
                     $request->MappedModel->Errors[$prop->name]=$r;
-                    throw new ValidationException($val);
+                    //throw new ValidationException($val);
                 }
             }
             $funcs = $reflClass->getMethods(\ReflectionMethod::IS_PUBLIC);
@@ -105,7 +106,7 @@ namespace OnionSkin\Models
                     foreach($val->LngParams as $key=>$value)
                         $r=str_replace('{'.$key.'}',$value,$r);
                     $request->MappedModel->Errors[$func->name]=$r;
-                    throw new ValidationException($val);
+                    //throw new ValidationException($val);
                 }
             }
         }
@@ -161,6 +162,10 @@ namespace OnionSkin\Models
                             if(!is_null($data2))
                                 if(!in_array($model->{$param->name},$data2->values))
                                     return new ErrorModel(false,"error_string_enum",array($data2->values),"String is not in enum");
+                            $data2=self::$reader->getPropertyAnnotation($param,"\OnionSkin\Routing\Annotations\AllowHTML");
+                            if(is_null($data2))
+                                if($model->{$param->name}!=strip_tags($model->{$param->name}))
+                                    return new ErrorModel(false,"error_string_html",array(),"String contain HTLML");
 
                         }
                         else
@@ -173,11 +178,11 @@ namespace OnionSkin\Models
                         else
                             return null;
                     case "int":
-                        if(filter_var($model->{$param->name},FILTER_VALIDATE_INT))
+                        if(is_numeric($model->{$param->name}))
                         {
                             $data2=self::$reader->getPropertyAnnotation($param,"\OnionSkin\Routing\Annotations\NumericRange");
                             if(!is_null($data2))
-                                if($data2->max > $model->{$param->name} && $data2->min < $model->{$param->name})
+                                if($data2->max < $model->{$param->name} || $data2->min > $model->{$param->name})
                                     return new ErrorModel(false,"error_int_range",array($data2->min,$data2->max),"Value");
                             else
                                 return null;

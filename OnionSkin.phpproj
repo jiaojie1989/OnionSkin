@@ -31,9 +31,12 @@
     <Compile Include="src\OnionSkin\Models\SnippetModel.class.php" />
     <Compile Include="src\OnionSkin\Pages\Errors.class.php" />
     <Compile Include="src\OnionSkin\Pages\MySnippets\AllSnippetsPage.class.php" />
+    <Compile Include="src\OnionSkin\Pages\MySnippets\FolderPage.class.php" />
     <Compile Include="src\OnionSkin\Pages\Profile\RegisterPage.class.php" />
+    <Compile Include="src\OnionSkin\Pages\Profile\SettingsPage.class.php" />
     <Compile Include="src\OnionSkin\Pages\PublicSnippetsPage.class.php" />
     <Compile Include="src\OnionSkin\Pages\ViewPage.class.php" />
+    <Compile Include="src\OnionSkin\Routing\Annotations\AllowHTML.class.php" />
     <Compile Include="src\OnionSkin\Routing\Annotations\Enum.class.php" />
     <Compile Include="src\OnionSkin\Routing\Annotations\Get.class.php" />
     <Compile Include="src\OnionSkin\Routing\Annotations\NumericRange.class.php" />
@@ -113,6 +116,8 @@
     <Content Include="config\router.ini" />
     <Content Include="js\loginpanel.js" />
     <Content Include="js\textarea_autogrown.js" />
+    <Content Include="MANUAL_CZ.MD" />
+    <Content Include="styles\colorDark.scss" />
     <Content Include="styles\colorLight.scss" />
     <Content Include="styles\onionskin\glyphicon.scss" />
     <Content Include="styles\onionskin\loginpanel.scss" />
@@ -121,15 +126,17 @@
     <Content Include="templates\error\Error500.tpl" />
     <Content Include="templates\fnc\Breadcrumbs.tpl" />
     <Content Include="templates\fnc\Pagination.tpl" />
+    <Content Include="templates\login\Login.tpl" />
     <Content Include="templates\login\LoginRegister.tpl" />
+    <Content Include="templates\login\Register.tpl" />
     <Content Include="templates\main\MySnippets.tpl" />
     <Content Include="templates\main\PublicSnippets.tpl" />
+    <Content Include="templates\main\Settings.tpl" />
     <Content Include="templates\_centered.tpl" />
     <Content Include="templates\_layout.tpl" />
     <Content Include="templates\_layoutBase.tpl" />
-    <Content Include="templates\_styleDark.tpl" />
+    <Content Include="templates\_layoutDark.tpl" />
     <Content Include="templates\_layoutLight.tpl" />
-    <Content Include="templates\_styleMain.tpl" />
     <Content Include="web.config" />
   </ItemGroup>
 </Project>

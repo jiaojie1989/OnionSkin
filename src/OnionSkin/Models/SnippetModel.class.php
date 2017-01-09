@@ -9,6 +9,7 @@ namespace OnionSkin\Models
     use OnionSkin\Routing\Annotations\Validate;
     use OnionSkin\Routing\Annotations\Enum;
     use OnionSkin\Routing\Annotations\PostValidate;
+    use OnionSkin\Routing\Annotations\AllowHTML;
 	/**
 	 * SnippetModel short summary.
 	 *
@@ -23,6 +24,12 @@ namespace OnionSkin\Models
         {
             parent::__construct("\\OnionSkin\\Pages\\EditPage");
         }
+        function __sleep()
+        {
+            $arr=parent::__sleep();
+            $arr=array_merge($arr,array("name","snippet","syntax","folder","visibility","expiration"));
+            return $arr;
+        }
         /**
          * @var string
          * @StringLength(min=3, max=64)
@@ -36,6 +43,7 @@ namespace OnionSkin\Models
          * @StringLength(min=1, max=4294967295)
          * @Validate(type="string")
          * @Post(id="snippet")
+         * @AllowHTML
          * @Required
          */
         public $snippet;
@@ -58,7 +66,7 @@ namespace OnionSkin\Models
 
         /**
          * @var int
-         * @NumericRange(min=0.0, max=2.0)
+         * @NumericRange(min=0.0, max=2.5)
          * @Validate(type="int")
          * @Post(id="visibility")
          * @Required

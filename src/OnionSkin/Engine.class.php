@@ -99,13 +99,21 @@ class Engine
             mkdir('styles_c', 0777, true);
 		try {
           //  self::bakeFile($scss,"styles/colorMain.scss","styles_c/colorMain.css");
-          //  self::bakeFile($scss,"styles/colorLight.scss","styles_c/colorLight.css");
+            self::bakeFile($scss,"styles/colorDark.scss","styles_c/colorDark.css");
             self::bakeFile($scss,"styles/colorLight.scss","styles_c/colorLight.css");
+            self::bakeFile($scss,"styles/onionskin/loginpanel.scss","styles_c/login.css");
 		} catch (exception $e) {
 			self::fail(502,$e->getMessage());
 		}
         if (!file_exists('fonts/bootstrap'))
-            mkdir("fonts/bootstrap",0777,true);/*
+            mkdir("fonts/bootstrap",0777,true);
+
+        if (!file_exists('styles_c/highlightjs'))
+            mkdir('styles_c/highlightjs', 0777, true);
+        copy("vendor/components/highlightjs/styles/vs.css","styles_c/highlightjs/vs.css");
+        copy("vendor/components/highlightjs/styles/androidstudio.css","styles_c/highlightjs/androidstudio.css");
+
+        /*
         copy("vendor/twbs/bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-regular.eot","fonts/bootstrap/glyphicons-halflings-regular.eot");
         copy("vendor/twbs/bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-regular.svg","fonts/bootstrap/glyphicons-halflings-regular.svg");
         copy("vendor/twbs/bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-regular.ttf","fonts/bootstrap/glyphicons-halflings-regular.ttf");

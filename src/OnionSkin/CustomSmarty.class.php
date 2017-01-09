@@ -55,16 +55,24 @@ namespace OnionSkin
         /**
          * @param \OnionSkin\Entities\Folder $folder
          */
-        public function breadcrumpFolder($folder)
+        public function breadcrumb($folder,$class="")
         {
-            $ret=' <ul class="breadcrumb">';
+            $ret=' <ul class="breadcrumb bg-trans "'.$class.'>';
             if($folder==null)
-                $ret.='<li><a class="active" href="'.Routing\Router::Path("\OnionSkin\Pages\MySnippets\FolderPage",array()).'">/</a></li>';
+                $ret.='<li class="breadcrumb-item active"><a class=" " href="'.Routing\Router::Path("\OnionSkin\Pages\MySnippets\FolderPage",array()).'">..</a></li>';
             else
             {
-                $ret.='<li><a class="active" href="'.Routing\Router::Path("\OnionSkin\Pages\MySnippets\FolderPage",array($folder->id,$folder->name)).'">'.$folder->name.'</a></li>';
-                $ret=$this->bread($folder->parentFolder).$ret;
+                $ret.=$this->bread($folder->parentFolder);
+                $ret.='<li class="breadcrumb-item active"><a class=" " href="'.Routing\Router::Path("\OnionSkin\Pages\MySnippets\FolderPage",array($folder->id,$folder->name)).'">'.$folder->name.'</a></li>';
             }
+            $ret.="</ul>";
+            return $ret;
+        }
+        public function breadcrumbS($snippet,$class="")
+        {
+            $ret=' <ul class="breadcrumb bg-trans "'.$class.'>';
+            $ret.=$this->bread($snippet->folder);
+            $ret.='<li class="breadcrumb-item active">'.$snippet->title.'</li>';
             $ret.="</ul>";
             return $ret;
         }
@@ -75,13 +83,17 @@ namespace OnionSkin
         {
             $ret="";
             if($folder==null)
-                $ret.='<li><a href="'.Routing\Router::Path("\OnionSkin\Pages\MySnippets\FolderPage",array()).'">/</a></li>';
+                $ret.='<li class="breadcrumb-item"><a class="" href="'.Routing\Router::Path("\OnionSkin\Pages\MySnippets\FolderPage",array()).'">..</a></li>';
             else
             {
-                $ret.='<li><a href="'.Routing\Router::Path("\OnionSkin\Pages\MySnippets\FolderPage",array($folder->id,$folder->name)).'">'.$folder->name.'</a></li>';
+                $ret.='<li class="breadcrumb-item"><a  href="'.Routing\Router::Path("\OnionSkin\Pages\MySnippets\FolderPage",array($folder->id,$folder->name)).'">'.$folder->name.'</a></li>';
                 $ret=$this->bread($folder->parentFolder).$ret;
             }
             return $ret;
+        }
+        public function Normalize($str)
+        {
+            return str_replace(" ","_",$str);
         }
     }
     class RouterPlugin
@@ -283,7 +295,7 @@ namespace OnionSkin
                 {
                     if($value==$val[0])
                         $sel='selected="selected"';
-                    $ret.='<option '.$sel.' value="'.key.'" >'.$val[1].'</option>';
+                    $ret.='<option '.$sel.' value="'.$val[0].'" >'.$val[1].'</option>';
                     continue;
                 }
                 if($value==$key)

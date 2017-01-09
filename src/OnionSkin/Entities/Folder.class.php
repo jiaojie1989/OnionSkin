@@ -38,6 +38,11 @@ class Folder {
      * @var Folder[]
      */
     public $childsFolders;
+    /**
+     * @OneToMany(targetEntity="Snippet",mappedBy="folder", fetch="EXTRA_LAZY")
+     * @var Snippet[]
+     */
+    public $snippets;
 
 
     public function parent()

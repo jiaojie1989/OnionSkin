@@ -13,6 +13,7 @@ namespace OnionSkin\Pages\MySnippets
 	 */
 	class AllSnippetsPage extends \OnionSkin\Page
 	{
+        
         public function get($request)
         {
             $pageid=$request->Param["pageid"];
@@ -20,7 +21,7 @@ namespace OnionSkin\Pages\MySnippets
                 $pageid=1;
             if($pageid<1)
                 return $this->redirect("PublicSnippetsPage");
-            $sql="SELECT s FROM OnionSkin\Entities\Snippet s WHERE s.user=10 ORDER BY s.createdTime DESC";
+            $sql="SELECT s FROM OnionSkin\Entities\Snippet s WHERE s.user=".Engine::$User->id." ORDER BY s.createdTime DESC";
             $query=Engine::$DB->createQuery($sql)->setFirstResult(($pageid-1)*50)->setMaxResults(50);
             $pager=new \Doctrine\ORM\Tools\Pagination\Paginator($query);
             if($pageid>count($pager) && count($pager)>1)

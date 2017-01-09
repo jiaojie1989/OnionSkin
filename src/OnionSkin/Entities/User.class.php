@@ -31,6 +31,11 @@ class User {
      */
 	public $passwordAndSalt;
 	/**
+     * @Column(type="string", length=12, nullable=false)
+     * @var string
+     */
+	public $style="light";
+	/**
      * @Column(type="datetime", name="date_created", nullable=false)
      * @var \DateTime
      */
