@@ -22,27 +22,35 @@ class Folder {
 	public $name;
 
 	/**
-	 * @ManyToOne(targetEntity="User", fetch="LAZY")
+     * @ManyToOne(targetEntity="User", fetch="LAZY")
+     * @JoinColumn(name="user_id", referencedColumnName="user_id", nullable=false)
+     * @var User
 	 */
 	public $user;
 	/**
      * @ManyToOne(targetEntity="Folder", fetch="LAZY")
-     * @var User
+     * @JoinColumn(name="parentFolder_id", referencedColumnName="folder_id", nullable=true)
+     * @var Folder
 	 */
 	public $parentFolder;
     /**
      * @OneToMany(targetEntity="Folder",mappedBy="parentFolder", fetch="EXTRA_LAZY")
-     * @var User[]
+     * @var Folder[]
      */
     public $childsFolders;
 
+
+    public function parent()
+    {
+        return $this->parentFolder;
+    }
 
     /**
      * @PrePersist
      * @PreUpdate
      */
     public function validate()
-    {
+    {/*
         $errors=new \OnionSkin\Exceptions\ErrorModel();
         if(!is_int($this->id) && !is_null($this->id))
             $errors->addError(true,"id","","ID is of type:"+gettype($this->id));
@@ -63,7 +71,7 @@ class Folder {
 
 
         if($errors->hasErrors())
-            throw new \OnionSkin\Exceptions\ValidationException($errors,"Errors during validation of snippet");
+            throw new \OnionSkin\Exceptions\ValidationException($errors,"Errors during validation of snippet");*/
     }
 
 }

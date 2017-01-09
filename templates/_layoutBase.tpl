@@ -5,58 +5,49 @@
 </head>
 <body>
 	{block name="js_start"}{/block}
-	<nav class="navbar navbar-default navbar-static-top">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">{$L.menu}</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">{$L.onionskin}</a>
-    </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li><a href="#">{$L.public_snippets}</a></li>
-			{if isset($logged) && $logged}
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{$L.my_snippets} <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">{$L.folders}</a></li>
-            <li><a href="#">{$L.file_types}</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">{$L.display_all}</a></li>
-          </ul>
+	<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+		  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+			</button>
+	<a class="navbar-brand" href="{$R->Path("@/")}">{$L.onionskin}</a>
+      <ul class="navbar-nav nav mt-2   mt-md-0">
+        <li class="nav-item"><a class="nav-link" href="{$R->Path("PublicSnippetsPage")}">{$L.public_snippets}</a></li>
+			{if $logged}
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{$L.my_snippets}</a>
+          <div class="dropdown-menu">
+            <a href="{$R->Path("MySnippets\FolderPage")}" class="dropdown-item">{$L.folders}</a>
+            <a href="{$R->Path("MySnippets\TypePage")}" class="dropdown-item">{$L.file_types}</a>
+			  <div class="dropdown-divider"></div>
+            <a href="{$R->Path("MySnippets\AllSnippetsPage")}" class="dropdown-item">{$L.display_all}</a>
+          </div>
         </li>
 		  {/if}
-        <li><p class="navbar-btn"><a class="btn btn-default" href="{$R->Path("EditPage")}">{$L.create_new_snippet}</a></p></li>
       </ul>
-      <ul class="nav navbar-nav navbar-right">
-		
-			{if isset($logged) && $logged}
-        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-          Signed in as Mark Otto <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Settings</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">{$L.logout}</a></li>
-          </ul>
+		<form class="form-inline my-2 mt-md-0 my-lg-0" action="{$R->Path("EditPage")}" method="get">
+				<button class="btn btn-sm align-middle btn-outline-success" type="submit">{$L.create_new_snippet}</button>
+			</form>
+	
+		{if $logged}
+		<ul class="navbar-nav my-2 ml-auto my-lg-0 nav">
+        <li class="nav-item dropdown"><a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+           {$user->username}</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">{$L.settings}</a>
+			  <div class="dropdown-divider"></div>
+			  {$Form->Start("logout","Profile\LogoutPage","post",["class"=>"form-inline dropdown-item"])}
+			  {$Form->AntiForgeryToken()}
+			  {$Form->Button("logout-submit",$L.sign_out,["class"=>"btn-link"])}
+			  {$Form->End()}
+          </div>
         </li>
-			{else}
-        <li><p class="navbar-btn"><a class="btn btn-default" href="{$R->Path("Profile\LoginPage")}">{$L.login}</a></p></li>
-			{/if}
       </ul>
-      <form class="navbar-form navbar-right" action="{$R->Path("SearchPage")}">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="{$L.search}">
-        </div>
-        <button type="submit" class="btn btn-default"> <span class="glyphicon glyphicon-search"></span></button>
-      </form>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
+			{else}
+		
+  <form class="form-inline my-2 ml-auto my-lg-0" method="get" action="{$R->Path("Profile\LoginPage")}">
+    <button class="btn btn-sm align-middle btn-outline-success" type="submit">{$L.login}</button>
+  </form>
+			{/if}
 </nav>
 	{block name="body"}{/block}
 	{block name="js_end"}{/block}

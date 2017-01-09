@@ -9,19 +9,37 @@ class Page {
 	public $RequireAdmin = true;
 	public $Url = array();
 
-	public function req_metod()
+	public final function req_metod()
 	{
 		return $_SERVER['REQUEST_METHOD'];
 	}
-	public function req_accept()
+	public final function req_accept()
 	{
 		return $_SERVER['HTTP_ACCEPT'];
 	}
-	protected function ok($page)
+	protected final function ok($page)
 	{
 		Engine::$Smarty->display($page);
 		die;
 	}
+
+    public final function redirect($page, $code=303,$vars=null)
+    {
+        if(substr($page,0,1)==="@")
+            header("Location: ".substr($page,1,strlen($page)-1),true,$code);
+        else
+            header("Location: ".Routing\Router::Path($page,$vars),true,$code);
+        die();
+    }
+    public static function RedirectTo($page, $code=303,$vars=null)
+    {
+        if(substr($page,0,1)==="@")
+            header("Location: ".substr($page,1,strlen($page)-1),true,$code);
+        else
+            header("Location: ".Routing\Router::Path($page,$vars),true,$code);
+        die();
+    }
+
     public function execute(){}
 
     public function get($request){}

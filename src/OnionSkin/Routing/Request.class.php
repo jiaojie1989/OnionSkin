@@ -23,6 +23,10 @@ namespace OnionSkin\Routing
          */
         public $Page;
 
+        /**
+         * Summary of $MappedModel
+         * @var \OnionSkin\Models\Model
+         */
         public $MappedModel;
 
         public $Method;
@@ -54,6 +58,8 @@ namespace OnionSkin\Routing
         public function Execute()
         {
             $mtd=strtolower($this->Method);
+            if(isset($this->MappedModel) && !$this->MappedModel->validateAntiForgetoryToken(get_class($this->Page)))
+                $this->Page->redirect("@/");
             \OnionSkin\Engine::$Smarty->assign("Request",$this);
             $this->Page->{$mtd}($this);
         }

@@ -1,4 +1,11 @@
-﻿.panel-login {
+﻿.limit-card.card .card-block {
+    overflow:auto;
+  height: -webkit-calc(100vh - 18rem);
+  height: -moz-calc(100vh - 18rem);
+  height: calc(100vh - 18rem);
+}
+
+.panel-login {
 	border-color: #ccc;
 	-webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
 	-moz-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);

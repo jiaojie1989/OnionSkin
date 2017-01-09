@@ -22,6 +22,10 @@ class Snippet
 	 */
 	public $title;
 	/**
+     * @Column(type="string", length=128, nullable=false)
+     */
+	public $syntax;
+	/**
      * @Column(type="string", length=4294967295, nullable=false)
 	 */
 	public $text;
@@ -33,15 +37,32 @@ class Snippet
 	 * @Column(type="datetime",name="date_modified",nullable=false)
 	 */
 	public $modifiedTime;
+
+    /**
+     * @Column(type="datetime",name="date_expiration",nullable=true)
+     * @var \DateTime
+     */
+    public $expirationTime;
 	/**
-     * @Column(type="binary", length=2)
+     * 0 = private
+     * 1 = link
+     * 2 = public
+     * @Column(type="smallint", options = {"unsigned"=true} )
 	 */
 	public $accessLevel;
 
 	/**
-	 * @ManyToOne(targetEntity="Folder", fetch="LAZY",nullable=false)
-	 */
+     * @ManyToOne(targetEntity="Folder", fetch="LAZY")
+     * @JoinColumn(name="folder_id", referencedColumnName="folder_id", nullable=true)
+     * @var Folder
+     * */
 	public $folder;
+	/**
+     * @ManyToOne(targetEntity="User", fetch="LAZY")
+     * @JoinColumn(name="user_id", referencedColumnName="user_id", nullable=true)
+     * @var User
+     */
+	public $user;
 
     /**
      * @PrePersist
@@ -64,7 +85,7 @@ class Snippet
      * @PreUpdate
      */
     public function validate()
-    {
+    {/*
         $errors=new \OnionSkin\Exceptions\ErrorModel();
         if(!is_int($this->id) && !is_null($this->id))
             $errors->addError(true,"id","","ID is of type:"+gettype($this->id));
@@ -89,6 +110,6 @@ class Snippet
 
 
         if($errors->hasErrors())
-            throw new \OnionSkin\Exceptions\ValidationException($errors,"Errors during validation of snippet");
+            throw new \OnionSkin\Exceptions\ValidationException($errors,"Errors during validation of snippet");*/
     }
 }

@@ -19,7 +19,7 @@ namespace OnionSkin
             $this->setCompileDir('templates_c/');
             $this->setConfigDir('configs/');
             $this->setCacheDir('cache/');
-            $this->caching = \Smarty::CACHING_LIFETIME_CURRENT;
+            //$this->caching = \Smarty::CACHING_LIFETIME_CURRENT;
             $this->assign('app_name', 'OnionSkin');
             $this->assign("L",Lang::GetLang());
             $this->assign("ldim","{"); // Best way to avoid smarty parsing of { and }
@@ -33,11 +33,54 @@ namespace OnionSkin
 	}
     class HelperPlugin
     {
-        public function cat($array)
+        public function cat(...$array)
         {
             $ret="";
-            foreach($array as $key=>$value)
-                $ret.=$value;
+            if(is_array($array[0])&& sizeof($array)==1)
+                $array=$array[0];
+            foreach($array as $value)
+                    $ret.=$value;
+            return $ret;
+        }
+        public function arrayAdd($array,$key,$value)
+        {
+            $array[$key]=$value;
+            return $array;
+        }
+        public function arrayAddBegin($array,$key,$value)
+        {
+            $array=array($key=>$value)+$array;
+            return $array;
+        }
+        /**
+         * @param \OnionSkin\Entities\Folder $folder
+         */
+        public function breadcrumpFolder($folder)
+        {
+            $ret=' <ul class="breadcrumb">';
+            if($folder==null)
+                $ret.='<li><a class="active" href="'.Routing\Router::Path("\OnionSkin\Pages\MySnippets\FolderPage",array()).'">/</a></li>';
+            else
+            {
+                $ret.='<li><a class="active" href="'.Routing\Router::Path("\OnionSkin\Pages\MySnippets\FolderPage",array($folder->id,$folder->name)).'">'.$folder->name.'</a></li>';
+                $ret=$this->bread($folder->parentFolder).$ret;
+            }
+            $ret.="</ul>";
+            return $ret;
+        }
+        /**
+         * @param \OnionSkin\Entities\Folder $folder
+         */
+        private function bread($folder)
+        {
+            $ret="";
+            if($folder==null)
+                $ret.='<li><a href="'.Routing\Router::Path("\OnionSkin\Pages\MySnippets\FolderPage",array()).'">/</a></li>';
+            else
+            {
+                $ret.='<li><a href="'.Routing\Router::Path("\OnionSkin\Pages\MySnippets\FolderPage",array($folder->id,$folder->name)).'">'.$folder->name.'</a></li>';
+                $ret=$this->bread($folder->parentFolder).$ret;
+            }
             return $ret;
         }
     }
@@ -45,7 +88,12 @@ namespace OnionSkin
     {
         public function Path($page,$vars=null)
         {
-            return Routing\Router::Path("\\OnionSkin\\Pages\\".$page,$vars);
+            $route=Routing\Router::Path("\\OnionSkin\\Pages\\".$page,$vars);
+            return $route;
+        }
+        public function Normalize($str)
+        {
+            return str_replace(" ","_",$str);
         }
         public function Route()
         {
@@ -56,7 +104,7 @@ namespace OnionSkin
     {
         /**
          * Summary of $page
-         * @var \OnionSkin\Page
+         * @var string
          */
         private $page;
         /**
@@ -69,6 +117,12 @@ namespace OnionSkin
          * @var string
          */
         private $method;
+
+        private $labelCls=null;
+
+        private $controlCls=null;
+
+        private $inner_wrapperAttr=null;
         /**
          * Summary of AntiForgeryToken
          * @return string
@@ -85,10 +139,13 @@ namespace OnionSkin
          *
          * @param \OnionSkin\Models\Model $Model
          */
-        public function BindModel($Model)
+        public function BindModel($model_cookie)
         {
-            if($Model->Page==$this->page)
-            $this->model=$Model;
+            if(isset($_SESSION[$model_cookie]))
+            {
+                $this->model=unserialize($_SESSION[$model_cookie]);
+                unset($_SESSION[$model_cookie]);
+            }
         }
         /**
          * @param string $id
@@ -97,14 +154,21 @@ namespace OnionSkin
          * @param array $attr
          * @return string
          */
-        public function Start($id,$Page,$method,$attr=null)
+        public function Start($id,$Page,$method,$attr=array())
         {
             $this->page="\\OnionSkin\\Pages\\".$Page;
             $this->method=$method;
-            $ret='<form id="'.$id.'" action="'.Routing\Router::Path($this->page).'" method="'.$method.'"';
-            if(is_array($attr))
-                foreach($attr as $key=>$value)
-                        $ret.=' '.$key.'="'.$value.'"';
+            $ret='<form id="'.$id.'" action="'.Routing\Router::Path($this->page,null,strtoupper($method)).'" method="'.$method.'"';
+            foreach($attr as $key=>$value)
+            {
+                if($key=="class" && strpos($value, 'form-horizontal') !== false)
+                {
+                    $this->labelCls="col-sm-2";
+                    $this->inner_wrapperAttr="col-sm-10";
+                    $this->controlCls="col-sm-offset-2 col-sm-10";
+                }
+                $ret.=' '.$key.'="'.$value.'"';
+            }
 
             return $ret.'>';
         }
@@ -119,78 +183,222 @@ namespace OnionSkin
             $this->method=null;
             return "</form>";
         }
-        public function TextBox($id,$label=null,$placeholder=null,$data=array())
+        private function defInput($type,$id,$label=null,$placeholder=null,$data=array())
         {
             $ret="";
-            if(isset($data["wrapper"]))
-                $ret.=$this->divStart($data["wrapper"]);
+            $dataInput=$data["input"];
+            $v=null;
+            $feed="";
+            if(isset($this->model))
+                if($this->method=="post")
+                {
+                    $v=$this->model->Errors[$this->model->refPOST[$id]];
+                }
+                else
+                    $v=$this->model->Errors[$this->model->refGET[$id]];
+            if($v!=null)
+            {
+                $data["wrapper"]=$this->appendThings($data["wrapper"],"class","has-error has-feedback");
+                $feed='<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>';
+            }
             else
-                $ret.=$this->divStart();
+                $v="";
+            $feed.=$this->feedback($v,$data["error"]);
 
+            $ret.=$this->divStart($data["wrapper"]);
             if(!is_null($label))
                 if(isset($data) && isset($data["label"]))
                     $ret.=$this->label($id,$label,$data["label"]);
                 else
                     $ret.=$this->label($id,$label);
 
-            $dataInput=$data["input"];
+            if($this->inner_wrapperAttr!=null)
+                $ret.='<div class="'.$this->inner_wrapperAttr.'">';
             $dataInput=$this->appendThings($dataInput,"class","form-control");
-            $ret.=$this->input($id,"text",$placeholder,$dataInput);
-
-
+            $ret.=$this->input($id,$type,$placeholder,$dataInput);
+            $ret.=$feed;
+            if(isset($data["help"]))
+            {
+                $ret.=$this->help($data["help"],$data["helper"]);
+            }
+            if($this->inner_wrapperAttr!=null)
+                $ret.='</div>';
             $ret.=$this->divEnd();
             return $ret;
+        }
+        public function Select($id,$options,$label=null,$data=array())
+        {
+            $ret="";
+            $dataInput=$data["select"];
+            $v=null;
+            $feed="";
+            if(isset($this->model))
+                if($this->method=="post")
+                {
+                    $v=$this->model->Errors[$this->model->refPOST[$id]];
+                }
+                else
+                    $v=$this->model->Errors[$this->model->refGET[$id]];
+            if($v!=null)
+            {
+                $data["wrapper"]=$this->appendThings($data["wrapper"],"class","has-error has-feedback");
+                $feed='<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>';
+            }
+            else
+                $v="";
+            $feed.=$this->feedback($v,$data["error"]);
+
+            $ret.=$this->divStart($data["wrapper"]);
+            if(!is_null($label))
+                if(isset($data) && isset($data["label"]))
+                    $ret.=$this->label($id,$label,$data["label"]);
+                else
+                    $ret.=$this->label($id,$label);
+
+            if($this->inner_wrapperAttr!=null)
+                $ret.='<div class="'.$this->inner_wrapperAttr.'">';
+            $dataInput=$this->appendThings($dataInput,"class","form-control");
+            $dataInput=$this->appendThings($dataInput,"rows","3");
+
+            $value="";
+            if(isset($this->model))
+                if($this->method=="get" && isset($this->model->refGET[$id]))
+                {
+                    $value=$this->model->{$this->model->refGET[$id]};
+                }
+                elseif($this->method=="post" && isset($this->model->refPOST[$id]))
+                {
+                    $value=$this->model->{$this->model->refPOST[$id]};
+                }
+            $ret.='<select id="'.$id.'" name="'.$id.'"';
+            if(is_array($dataInput))
+                foreach($dataInput as $key=>$val)
+                    if($key!="label" && $key!="wrapper" && $key!="help")
+                        $ret.=' '.$key.'="'.$val.'"';
+            $ret.=">";
+            foreach($options as $key=>$val)
+            {
+                $sel="";
+                if(is_array($val))
+                {
+                    if($value==$val[0])
+                        $sel='selected="selected"';
+                    $ret.='<option '.$sel.' value="'.key.'" >'.$val[1].'</option>';
+                    continue;
+                }
+                if($value==$key)
+                    $sel='selected="selected"';
+                $ret.='<option '.$sel.' value="'.$key.'" >'.$val.'</option>';
+            }
+            $ret.="</select>";
+            $ret.=$feed;
+            if(isset($data["help"]))
+            {
+                $ret.=$this->help($data["help"],$data["helper"]);
+            }
+            if($this->inner_wrapperAttr!=null)
+                $ret.='</div>';
+            $ret.=$this->divEnd();
+            return $ret;
+        }
+        public function TextArea($id,$label=null,$placeholder=null,$data=array())
+        {
+            $ret="";
+            $dataInput=$data["textarea"];
+            $v=null;
+            $feed="";
+            if(isset($this->model))
+                if($this->method=="post")
+                {
+                    $v=$this->model->Errors[$this->model->refPOST[$id]];
+                }
+                else
+                    $v=$this->model->Errors[$this->model->refGET[$id]];
+            if($v!=null)
+            {
+                $data["wrapper"]=$this->appendThings($data["wrapper"],"class","has-error has-feedback");
+                $feed='<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>';
+            }
+            else
+                $v="";
+            $feed.=$this->feedback($v,$data["error"]);
+
+            $ret.=$this->divStart($data["wrapper"]);
+            if(!is_null($label))
+                if(isset($data) && isset($data["label"]))
+                    $ret.=$this->label($id,$label,$data["label"]);
+                else
+                    $ret.=$this->label($id,$label);
+
+            if($this->inner_wrapperAttr!=null)
+                $ret.='<div class="'.$this->inner_wrapperAttr.'">';
+            $dataInput=$this->appendThings($dataInput,"class","form-control auto_grow");
+            $dataInput=$this->appendThings($dataInput,"rows","3");
+
+            $value="";
+            if(isset($this->model))
+                if($this->method=="get" && isset($this->model->refGET[$id]))
+                {
+                    $value=$this->model->{$this->model->refGET[$id]};
+                }
+                elseif($this->method=="post" && isset($this->model->refPOST[$id]))
+                {
+                    $value=$this->model->{$this->model->refPOST[$id]};
+                }
+            $ret.='<textarea id="'.$id.'" name="'.$id.'"';
+            if(is_string($placeholder))
+                $ret.=' placeholder="'.$placeholder.'"';
+            if(is_array($dataInput))
+                foreach($dataInput as $key=>$val)
+                    if($key!="label" && $key!="wrapper" && $key!="help")
+                        $ret.=' '.$key.'="'.$val.'"';
+            $ret.=">".$value."</textarea>";
+            $ret.=$feed;
+            if(isset($data["help"]))
+            {
+                $ret.=$this->help($data["help"],$data["helper"]);
+            }
+            if($this->inner_wrapperAttr!=null)
+                $ret.='</div>';
+            $ret.=$this->divEnd();
+            return $ret;
+        }
+        public function TextBox($id,$label=null,$placeholder=null,$data=array())
+        {
+            return $this->defInput("text",$id,$label,$placeholder,$data);
         }
         public function Email($id,$label=null,$placeholder=null,$data=array())
         {
-            $ret="";
-            if(isset($data["wrapper"]))
-                $ret.=$this->divStart($data["wrapper"]);
-            else
-                $ret.=$this->divStart();
-
-            if(!is_null($label))
-                if(isset($data) && isset($data["label"]))
-                    $ret.=$this->label($id,$label,$data["label"]);
-                else
-                    $ret.=$this->label($id,$label);
-
-            $dataInput=$data["input"];
-            $dataInput=$this->appendThings($dataInput,"class","form-control");
-            $ret.=$this->input($id,"email",$placeholder,$dataInput);
-
-            $ret.=$this->divEnd();
-            return $ret;
+            return $this->defInput("email",$id,$label,$placeholder,$data);
         }
         public function Password($id,$label=null,$placeholder=null,$data=array())
         {
+            return $this->defInput("password",$id,$label,$placeholder,$data);
+        }
+        public function Button($id,$value,$data=array())
+        {
             $ret="";
-            if(isset($data["wrapper"]))
-                $ret.=$this->divStart($data["wrapper"]);
-            else
-                $ret.=$this->divStart();
-
-            if(!is_null($label))
-                if(isset($data) && isset($data["label"]))
-                    $ret.=$this->label($id,$label,$data["label"]);
-                else
-                    $ret.=$this->label($id,$label);
-
-            $dataInput=$data["input"];
-            $dataInput=$this->appendThings($dataInput,"class","form-control");
-            $ret.=$this->input($id,"password",$placeholder,$dataInput);
-
-            $ret.=$this->divEnd();
+            $data=$this->appendThings($data,"class","btn");
+            $data=$this->appendThings($data,"value",$value);
+            $data=$this->appendThings($data,"type","submit");
+            if($this->controlCls!=null)
+                $ret.='<div class="'.$this->controlCls.'">';
+            $ret.='<button id="'.$id.'" name="'.$id.'"';
+            if(is_array($data))
+                foreach($data as $key=>$val)
+                    $ret.=' '.$key.'="'.$val.'"';
+            $ret.=">".$value."</button>";
+            if($this->controlCls!=null)
+                $ret.='</div>';
             return $ret;
         }
         public function Submit($id,$value=null,$data=array())
         {
             $ret="";
-            if(isset($data["wrapper"]))
                 $ret.=$this->divStart($data["wrapper"]);
-            else
-                $ret.=$this->divStart();
 
+            if($this->controlCls!=null)
+                $ret.='<div class="'.$this->controlCls.'">';
 
             $dataInput=$data["input"];
             $style="button_middle";
@@ -205,21 +413,27 @@ namespace OnionSkin
                     $ret.=$this->input($id,"submit",null,$dataInput);
                     $ret.="</div></div>";
                     break;
+                case "link":
+                    $dataInput=$this->appendThings($dataInput,"class","btn-link btn");
+                    $dataInput=$this->appendThings($dataInput,"value",$value);
+                    return $this->input($id,"submit",null,$dataInput);
             }
 
+            if($this->controlCls!=null)
+                $ret.='</div>';
             $ret.=$this->divEnd();
             return $ret;
         }
         public function CheckBox($id,$label=null,$data=array())
         {
             $ret="";
-            if(isset($data["wrapper"]))
-                $ret.=$this->divStart($data["wrapper"]);
-            else
-                $ret.=$this->divStart();
+            $ret.=$this->divStart($data["wrapper"]);
 
             $dataInput=$data["input"];
-            $ret.=$this->input($id,"checkbox",null,$dataInput).' ';
+            if($this->controlCls!=null)
+                $ret.='<div class="'.$this->controlCls.'">';
+
+            $ret.='<div class="checkbox">'.$this->input($id,"checkbox",null,$dataInput).' ';
 
             if(!is_null($label))
                 if(isset($data) && isset($data["label"]))
@@ -227,13 +441,15 @@ namespace OnionSkin
                 else
                     $ret.=$this->label($id,$label);
 
-            $ret.=$this->divEnd();
+            if($this->controlCls!=null)
+                $ret.='</div>';
+            $ret.='</div>'.$this->divEnd();
             return $ret;
         }
         private function divStart($attr=null)
         {
             $return="<div";
-            $attr=$this->appendThings($attr,"class","form-group");
+            $attr=$this->appendThings($attr,"class","form-group row");
             foreach($attr as $key=>$value)
                $return.=' '.$key.'="'.$value.'"';
             return $return.">";
@@ -246,6 +462,8 @@ namespace OnionSkin
         private function label($id,$label,$data=array())
         {
             $ret='<label for="'.$id.'"';
+            if($this->labelCls!=null)
+                $data=$this->appendThings($data,"class",$this->labelCls);
             if(is_array($data))
                 foreach($data as $key=>$value)
                     $ret.=' '.$key.'="'.$value.'"';
@@ -273,8 +491,8 @@ namespace OnionSkin
         }
         private function feedback($txt,$data=array())
         {
-            $ret="<div ";
-            $data=$this->appendThings($data,"class"," form-control-feedback");
+            $ret="<small ";
+            $data=$this->appendThings($data,"class","help-block text-danger");
             foreach($data as $key=>$value)
                if($key!="label" && $key!="wrapper")
                   $ret.=' '.$key.'="'.$value.'"';
@@ -285,9 +503,9 @@ namespace OnionSkin
         private function help($txt,$data=array())
         {
             $ret="<small";
-            $data=$this->appendThings($data,"class"," form-text text-muted");
+            $data=$this->appendThings($data,"class"," help-block text-muted");
             foreach($data as $key=>$value)
-               if($key!="label" && $key!="wrapper")
+                if($key!="label" && $key!="wrapper" && $key!="help")
                   $ret.=' '.$key.'="'.$value.'"';
             $ret.=">".$txt;
             return $ret."</small>";

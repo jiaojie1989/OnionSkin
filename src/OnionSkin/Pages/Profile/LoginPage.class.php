@@ -3,6 +3,8 @@
 
 namespace OnionSkin\Pages\Profile
 {
+    use OnionSkin\Engine;
+    use OnionSkin\Lang;
 	/**
      * LoginPage short summary.
      *
@@ -18,35 +20,42 @@ namespace OnionSkin\Pages\Profile
             $this->RequireLogged = false;
             $this->RequireAdmin = false;
         }
-        /**
-         * @return boolean
-         */
-        public function execute()
-        {
-            switch($this->req_metod())
-            {
-                case "POST":
-                    return $this->create();
-                case "GET":
-                    return $this->get();
-                case "PATCH":
-                case "PUT":
-                    return $this->update();
-                case "DELETE":
-                    return $this->remove();
 
+        public function post($request)
+        {
+            if(Engine::$User!=null)
+                $this->redirect("@/");
+            $model=$request->MappedModel;
+            /**
+             * @var \OnionSkin\Models\LoginModel $model
+             */
+            $user=Engine::$DB->getRepository("\\OnionSkin\\Entities\\User")->findOneBy(array("username"=>$model->username));
+            /**
+             * @var \OnionSkin\Entities\User $user
+             */
+            if(!isset($user))
+                $model->Errors["username"]=Lang::L("error_username_wrong");
+            elseif(!$user->comparePassword($model->password))
+                $model->Errors["password"]=Lang::L("error_password_wrong");
+            if(sizeof($request->MappedModel->Errors)>0)
+            {
+                $model->password=null;
+                $_SESSION["form_login"]=serialize($model);
+                $this->redirect("\\OnionSkin\\Pages\\Profile\\LoginPage");
             }
-            return $this->get();
+            else
+            {
+                $_SESSION["User"]=$user->id;
+                $this->redirect("@/");
+            }
         }
 
         public function get($request)
         {
+            if(Engine::$User!=null)
+                $this->redirect("@/");
             $this->ok("login/LoginRegister.tpl");
             return true;
-        }
-        private function create()
-        {
-            $this->redirect("");
         }
 
         private function getModel()

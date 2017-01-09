@@ -28,10 +28,18 @@
     <Compile Include="lang\lang.cz.ini" />
     <Compile Include="src\OnionSkin\Models\Model.class.php" />
     <Compile Include="src\OnionSkin\Models\SearchModel.class.php" />
+    <Compile Include="src\OnionSkin\Models\SnippetModel.class.php" />
+    <Compile Include="src\OnionSkin\Pages\Errors.class.php" />
+    <Compile Include="src\OnionSkin\Pages\MySnippets\AllSnippetsPage.class.php" />
+    <Compile Include="src\OnionSkin\Pages\Profile\RegisterPage.class.php" />
+    <Compile Include="src\OnionSkin\Pages\PublicSnippetsPage.class.php" />
+    <Compile Include="src\OnionSkin\Pages\ViewPage.class.php" />
+    <Compile Include="src\OnionSkin\Routing\Annotations\Enum.class.php" />
     <Compile Include="src\OnionSkin\Routing\Annotations\Get.class.php" />
     <Compile Include="src\OnionSkin\Routing\Annotations\NumericRange.class.php" />
     <Compile Include="src\OnionSkin\Routing\Annotations\Path.class.php" />
     <Compile Include="src\OnionSkin\Routing\Annotations\Post.class.php" />
+    <Compile Include="src\OnionSkin\Routing\Annotations\PostValidate.class.php" />
     <Compile Include="src\OnionSkin\Routing\Annotations\Required.class.php" />
     <Compile Include="src\OnionSkin\Routing\Annotations\StringLength.class.php" />
     <Compile Include="src\OnionSkin\Routing\Annotations\Validate.class.php" />
@@ -39,7 +47,7 @@
     <Compile Include="src\OnionSkin\Entities\Folder.class.php" />
     <Compile Include="src\OnionSkin\Entities\Snippet.class.php" />
     <Compile Include="src\OnionSkin\Entities\User.class.php" />
-    <Compile Include="src\OnionSkin\Exceptions\ErrorModel.php" />
+    <Compile Include="src\OnionSkin\Exceptions\ErrorModel.class.php" />
     <Compile Include="src\OnionSkin\Exceptions\ValidationException.class.php" />
     <Compile Include="src\OnionSkin\Models\LoginModel.class.php" />
     <Compile Include="src\OnionSkin\Models\RegisterModel.class.php" />
@@ -52,7 +60,10 @@
     <Compile Include="src\OnionSkin\Routing\Route.class.php" />
     <Compile Include="src\OnionSkin\Routing\Router.class.php" />
     <Compile Include="src\OnionSkin\Routing\Request.class.php" />
+    <Compile Include="src\OnionSkin\Smarty\FormPlugin.class.php" />
+    <Compile Include="src\OnionSkin\Smarty\PaginationPlugin.class.php" />
     <Compile Include="src\OnionSkin\UtilsINI.class.php" />
+    <Compile Include="src\onionskin_autoload.php" />
     <Compile Include="templates\main\NoteEdit.tpl" />
     <Compile Include="templates\main\NoteView.tpl" />
     <Compile Include="templates_c\36b437035cbc93f2b6957aceb8752e4387d36df6_0.file.@40styleLight.tpl.cache.php" />
@@ -78,6 +89,8 @@
     <Folder Include="src\OnionSkin\Entities" />
     <Folder Include="src\OnionSkin\Exceptions\" />
     <Folder Include="src\OnionSkin\Models\" />
+    <Folder Include="src\OnionSkin\Smarty\" />
+    <Folder Include="src\OnionSkin\Pages\MySnippets\" />
     <Folder Include="src\OnionSkin\Pages\Profile\" />
     <Folder Include="src\OnionSkin\Routing\" />
     <Folder Include="src\OnionSkin\Pages" />
@@ -89,6 +102,8 @@
     <Folder Include="templates\main" />
     <Folder Include="templates" />
     <Folder Include="templates\login\" />
+    <Folder Include="templates\error\" />
+    <Folder Include="templates\fnc\" />
     <Folder Include="templates_c" />
   </ItemGroup>
   <ItemGroup>
@@ -99,9 +114,16 @@
     <Content Include="js\loginpanel.js" />
     <Content Include="js\textarea_autogrown.js" />
     <Content Include="styles\colorLight.scss" />
+    <Content Include="styles\onionskin\glyphicon.scss" />
     <Content Include="styles\onionskin\loginpanel.scss" />
     <Content Include="styles\onionskin\textarea_autogrow.scss" />
+    <Content Include="templates\error\Error404.tpl" />
+    <Content Include="templates\error\Error500.tpl" />
+    <Content Include="templates\fnc\Breadcrumbs.tpl" />
+    <Content Include="templates\fnc\Pagination.tpl" />
     <Content Include="templates\login\LoginRegister.tpl" />
+    <Content Include="templates\main\MySnippets.tpl" />
+    <Content Include="templates\main\PublicSnippets.tpl" />
     <Content Include="templates\_centered.tpl" />
     <Content Include="templates\_layout.tpl" />
     <Content Include="templates\_layoutBase.tpl" />

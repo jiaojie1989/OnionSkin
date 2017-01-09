@@ -2,6 +2,10 @@
 
 namespace OnionSkin\Models
 {
+    use OnionSkin\Routing\Annotations\Post;
+    use OnionSkin\Routing\Annotations\Required;
+    use OnionSkin\Routing\Annotations\StringLength;
+    use OnionSkin\Routing\Annotations\Validate;
 	/**
 	 * Login short summary.
 	 *
@@ -10,20 +14,33 @@ namespace OnionSkin\Models
 	 * @version 1.0
 	 * @author Fry
 	 */
-	class LoginModel
+	class LoginModel extends Model
 	{
+        function __construct()
+        {
+            parent::__construct("\\OnionSkin\\Pages\\Profile\\LoginPage");
+        }
         /**
          * @var string
-         * @stringLength(min=0, max=64, langCode="errorStringLength")
-         * @post(id="username")
+         * @StringLength(min=3, max=64)
+         * @Validate(type="string")
+         * @Post(id="username")
          */
         public $username;
 
         /**
          * @var string
-         * @stringLength(min=4, max=100, langCode="errorStringLength")
-         * @post(id="password")
+         * @StringLength(min=4, max=100)
+         * @Validate(type="string")
+         * @Post(id="password")
          */
         public $password;
+
+        function __sleep()
+        {
+            $arr=parent::__sleep();
+            $arr=array_merge($arr,array("username","password"));
+            return $arr;
+        }
 	}
 }

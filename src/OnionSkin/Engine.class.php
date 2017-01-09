@@ -21,29 +21,35 @@ class Engine
 	public static $User;
 	public static $Config;
 
-	public static function autoload($className)
-	{
-		$url = "src/".$className .".class.php";
-		if(is_file($url))
-			require_once($url);
-	}
 
 	public static function Init()
 	{
-		spl_autoload_register("OnionSkin\Engine::autoload");
 		if(func_num_args()>0)
 			$CONFIG = func_get_arg(0);
 		else
 			$CONFIG = parse_ini_file("config/configuration.ini",true);
+        Routing\Router::Register("config/router.ini");
 		session_start();
-        $dbconf= \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(array(__DIR__."/src/OnionSkin/Entities",self::$debug));
+        $dbconf= \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(array("src/OnionSkin/Entities"),self::$debug,null,new \Doctrine\Common\Cache\ArrayCache());
         self::$DB=\Doctrine\ORM\EntityManager::create($CONFIG["Database"],$dbconf);
         $CONFIG["Database"]=null;
 		self::$Config=$CONFIG;
 		self::$Smarty = new CustomSmarty();
-        if(isset($_SESSION["User"]))
-		    self::$User = $_SESSION["User"];
-        Routing\Router::Register("config/router.ini");
+        try {
+            self::$DB->getConnection()->connect();
+            $schemaTool = new \Doctrine\ORM\Tools\SchemaTool(self::$DB);
+            $classes = self::$DB->getMetadataFactory()->getAllMetadata();
+            $schemaTool->updateSchema($classes,true);
+            if(isset($_SESSION["User"])){
+                self::$User = self::$DB->find("\\OnionSkin\\Entities\\User",$_SESSION["User"]);
+                self::$Smarty->assign("user",self::$User);
+            }
+            self::$Smarty->assign("logged",!is_null(self::$User));
+        }
+        catch (\Exception $e) {
+            if($_GET["url"]!="Error500")
+                Page::RedirectTo("@\\Error500");
+        }
 	}
 
 
@@ -62,13 +68,11 @@ class Engine
 		{
 			error_reporting(3);
 			ini_set('display_errors', TRUE);
-			self::$Smarty->caching = false;
 		}
 		else
 		{
 			error_reporting(0);
 			ini_set('display_errors', FALSE);
-			self::$Smarty->caching = true;
 		}
 	}
 
@@ -89,7 +93,7 @@ class Engine
         $scss = new \Leafo\ScssPhp\Compiler();
         $scss->setLineNumberStyle(\Leafo\ScssPhp\Compiler::LINE_COMMENTS);
         $scss->setFormatter("\Leafo\ScssPhp\Formatter\Crunched");
-        $scss->addImportPath("vendor/twbs/bootstrap-sass/assets/stylesheets");
+        $scss->addImportPath("vendor/twbs/bootstrap/scss");
         $scss->addImportPath("styles");
         if (!file_exists('styles_c'))
             mkdir('styles_c', 0777, true);
@@ -101,23 +105,19 @@ class Engine
 			self::fail(502,$e->getMessage());
 		}
         if (!file_exists('fonts/bootstrap'))
-            mkdir("fonts/bootstrap",0777,true);
+            mkdir("fonts/bootstrap",0777,true);/*
         copy("vendor/twbs/bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-regular.eot","fonts/bootstrap/glyphicons-halflings-regular.eot");
         copy("vendor/twbs/bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-regular.svg","fonts/bootstrap/glyphicons-halflings-regular.svg");
         copy("vendor/twbs/bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-regular.ttf","fonts/bootstrap/glyphicons-halflings-regular.ttf");
         copy("vendor/twbs/bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-regular.woff","fonts/bootstrap/glyphicons-halflings-regular.woff");
-        copy("vendor/twbs/bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-regular.woff2","fonts/bootstrap/glyphicons-halflings-regular.woff2");
+        copy("vendor/twbs/bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-regular.woff2","fonts/bootstrap/glyphicons-halflings-regular.woff2");*/
 	}
     public static function BakeJs()
     {
         if (!file_exists('js_c'))
             mkdir('js_c', 0777, true);
-        $mimify = new \MatthiasMullie\Minify\JS();
-        $mimify->add("vendor/twbs/bootstrap-sass/assets/javascripts/bootstrap.js");
-        $mimify->minify("js_c/bootstrap.js");
-        $mimify = new \MatthiasMullie\Minify\JS();
-        $mimify->add("vendor/components/highlightjs/highlight.pack.js");
-        $mimify->minify("js_c/highlight.js");
+        copy("vendor/twbs/bootstrap/dist/js/bootstrap.min.js","js_c/bootstrap.js");
+        copy("vendor/components/highlightjs/highlight.pack.min.js","js_c/highlight.js");
         $mimify = new \MatthiasMullie\Minify\JS();
         $mimify->add("js/textarea_autogrown.js");
         $mimify->minify("js_c/editor.js");

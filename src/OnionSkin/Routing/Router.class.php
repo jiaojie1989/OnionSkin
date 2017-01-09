@@ -25,29 +25,21 @@ namespace OnionSkin\Routing
                 self::$routes[]= new Route($value);
             }
         }
-        public static function getRouteForPath($path)
-        {
 
-        }
-        public static function getRouteForPage($page)
-        {
-
-        }
-
-        public static function Path($page, $vars=null)
+        public static function Path($page, $vars=null,$method="GET")
         {
             if(is_string($page))
                 foreach(self::$routes as $route)
                 {
-                    if($route->getPage()==$page)
-                        return $route->path($vars);
+                    if($route->getPage()==$page && in_array($method,$route->getMethods()))
+                        return "/".$route->path($vars);
 
                 }
             elseif(is_object($page))
                 foreach(self::$routes as $route)
                 {
                     if($route->getPage()==get_class($page))
-                        return $route->path($vars);
+                        return "/".$route->path($vars);
                 }
             return null;
         }
@@ -65,6 +57,7 @@ namespace OnionSkin\Routing
                     }
                 }
             }
+            \OnionSkin\Page::RedirectTo("@\\Error404");
         }
 	}
 }

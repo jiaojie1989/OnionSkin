@@ -2,13 +2,23 @@
 namespace OnionSkin;
 class Lang {
 
+    private static $instance;
+
     public static function GetLang($langType=null)
     {
-        if($langType===null)
-            return parse_ini_file("lang/lang.".self::langType().".ini",false);
-        else
-            return parse_ini_file("lang/lang".$langType."ini",false);
+        if($langType===null && !isset(self::$instance))
+            self::$instance=parse_ini_file("lang/lang.".self::langType().".ini",false);
+        elseif(!isset(self::$instance))
+            self::$instance=parse_ini_file("lang/lang".$langType."ini",false);
+        return self::$instance;
     }
+    public static function L($code)
+    {
+        if(!isset(self::$instance))
+            self::GetLang();
+        return self::$instance[$code];
+    }
+
     private static function langType()
     {
         $value=Engine::$Config["Defaults"]["Language"];

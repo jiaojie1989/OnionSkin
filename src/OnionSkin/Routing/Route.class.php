@@ -12,6 +12,10 @@ namespace OnionSkin\Routing
      */
 	class Route
 	{
+        /**
+         * Summary of $methods
+         * @var array
+         */
         private $methods;
         /**
          *
@@ -21,9 +25,21 @@ namespace OnionSkin\Routing
         private $page;
         private $model;
 
+        /**
+         * Summary of getPage
+         * @return mixed
+         */
         public function getPage()
         {
             return $this->page;
+        }
+        /**
+         * Summary of getMethods
+         * @return array
+         */
+        public function getMethods()
+        {
+            return $this->methods;
         }
 
         public function __construct($data)
@@ -68,7 +84,7 @@ namespace OnionSkin\Routing
                         if(!is_null($this->model))
                         {
                             $request->MappedModel=new $this->model;
-                            MappedModel::MapModel($request);
+                            \OnionSkin\Models\Model::MapRequest($request);
                         }
                         return true;
                     }
@@ -78,7 +94,10 @@ namespace OnionSkin\Routing
         }
         public function path($vars=null)
         {
-            return $this->paths[0]->getPath($vars); //TODO: In future rewrite to choosing appropriate path from paths.
+            foreach($this->paths as $path)
+                if(count($path->getParams())==count($vars))
+                    return $path->getPath($vars);
+            return $this->paths[0]->getPath($vars);
         }
 
 	}
@@ -87,6 +106,11 @@ namespace OnionSkin\Routing
         private $path;
         private $pathRegex;
         private $params=array();
+
+        public function getParams()
+        {
+            return $this->params;
+        }
         /**
          * Summary of __construct
          * @param string $path
@@ -125,7 +149,7 @@ namespace OnionSkin\Routing
             if(sizeof($par)-1!=sizeof($this->params))
                 return false;
             for($i=0;$i<sizeof($par)-1;$i++)
-                if(!$this->params[$i]->valide($par[$i+1]))
+                if(!$this->params[$i]->valide($par[$i+1][0]))
                     return false;
             return true;
         }
@@ -136,31 +160,37 @@ namespace OnionSkin\Routing
         {
             preg_match_all($this->pathRegex,$request->Path,$request->Params);
             $request->Params=array_slice($request->Params,1);
+            $ret=array();
+            for($i=0;$i<count($this->params);$i++)
+                $ret[$this->params[$i]->name]=$request->Params[$i];
+            $request->Params=$ret;
         }
     }
     class RoutePathParameter
     {
         private $param;
         private $type;
-        private $name;
+        public $name;
         public function __construct($param)
         {
             $this->param=$param;
             preg_match("/[^{][a-zA-Z0-9]*[^:]/",$param,$this->name);
             preg_match("/(?<=:).[a-zA-Z0-9]*/",$param,$this->type);
+            $this->name=$this->name[0];
+            $this->type=$this->type[0];
         }
         public function valide($value)
         {
             switch($this->type)
             {
                 case "int":
-                    return is_int($value);
+                    return is_numeric($value);
                 case "float":
-                    return is_float($value);
+                    return is_float($value) || is_numeric($value) && ((float) $value != (int) $value);
                 case "double":
-                    return is_double($value);
+                    return is_double($value) || is_numeric($value) && ((double) $value != (int) $value);
                 case "long":
-                    return is_long($value);
+                    return is_numeric($value) && is_long($value);
                 case "string":
                 default:
                     return is_string($value);
