@@ -76,9 +76,9 @@ $(document).ready(function() {
                 aData.title + '</a>');
 			var d=new Date(aData.modifiedTime.date);
             $('td:eq(1)', nRow).html(
-                d.getMinutes()+':'+d.getHours()+' '+d.getDate()+'.'+(d.getMonth()+1)+'.'+d.getFullYear());
+                d.getHours()+':'+d.getMinutes()+' '+d.getDate()+'.'+(d.getMonth()+1)+'.'+d.getFullYear());
             $('td:eq(3)', nRow).html('<form class="btn-group" action="Edit/'+aData.id+'" method="get"><button class="btn btn-sm btn-info">{$L.edit}</button><input type="hidden" class="btn"></form>'+
-	'<form class="btn-group" action="'+aData.id+'" method="delete"><input type="hidden" class="btn "><button class="btn btn-sm btn-danger">{$L.remove}</button></form>');
+	'<form class="btn-group" action="Edit/'+aData.id+'" method="get"><input type="hidden" name="_method" value="DELETE"><input type="hidden" class="btn "><button class="btn btn-sm btn-danger">{$L.remove}</button></form>');
             return nRow;
         }
 	{$rdim});

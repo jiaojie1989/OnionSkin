@@ -15,6 +15,29 @@ namespace OnionSkin\Pages
 	{
         public function get($request)
         {
+            if(strpos($_SERVER['HTTP_ACCEPT'], 'json') !== false)
+            {
+                if(!is_numeric($_GET["length"]) ||!is_numeric($_GET["start"]) || !is_numeric($_GET["order"][0]["column"]) || ($_GET["order"][0]["dir"]!="asc" && $_GET["order"][0]["dir"]!="desc"))
+                    return $this->json(array()); //HACK
+                $r="s.title";
+                switch($_GET["order"][0]["column"])
+                {
+                    case "1": $r="s.createdTime";
+                    case "2": $r="s.syntax";
+                }
+                $sql="SELECT s FROM OnionSkin\Entities\Snippet s WHERE s.accessLevel=2 ORDER BY ".$r." ".$_GET["order"][0]["dir"]."";
+                $query=Engine::$DB->createQuery($sql)->setFirstResult($_GET["start"])->setMaxResults($_GET["length"]);
+                $total=Engine::$DB->createQuery("SELECT count(s.id) FROM OnionSkin\Entities\Snippet s WHERE s.user=".Engine::$User->id)->getSingleScalarResult();
+                header ('Content-Type', 'application/json');
+                $data=$query->getResult();
+                foreach($data as $d)
+                {
+                    $d->user=$d->user->username;
+                    if($d->folder!=null)
+                    $d->folder=$d->folder->id;
+                }
+                return $this->json(array("draw"=>(int)$_GET["draw"],"recordsTotal"=>$total,"recordsFiltered"=>$total,"data"=>$data));
+            }
             $pageid=$request->Param["pageid"];
             if(!isset($pageid))
                 $pageid=1;

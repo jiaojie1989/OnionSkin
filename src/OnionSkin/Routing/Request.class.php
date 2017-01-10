@@ -48,6 +48,10 @@ namespace OnionSkin\Routing
             $request = new Request();
             $request->Path=$_GET["url"];
             $request->Method=$_SERVER['REQUEST_METHOD'];
+            if(isset($_GET["_method"]))
+                $request->Method=$_GET['_method'];
+            if(isset($_POST["_method"]))
+                $request->Method=$_POST['_method'];
             $request->AcceptLanguages=$_SERVER['HTTP_ACCEPT_LANGUAGE'];
             $request->Accept=$_SERVER['HTTP_ACCEPT'];
             $request->ContentType=$_SERVER["CONTENT_TYPE"];

@@ -15,17 +15,20 @@
 	  {else}
 	{/if}
 <div class="btn-group float-right">
-  <a href="#" class="btn btn-primary">Raw</a>
-  <a href="#" class="btn btn-primary">Print</a>
-  <a href="#" class="btn btn-primary">Get</a>
+  <a href="{$R->Path("RawPage",array($snippet->id))}" class="btn btn-primary">Raw</a>
+  <a href="{$R->Path("PrintPage",array($snippet->id))}" class="btn btn-primary">Print</a>
+  <a href="{$R->Path("GetPage",array($snippet->id))}" class="btn btn-primary">Get</a>
 	{if $snippet->isOwner()}
   <div class="btn-group" role="group">
     <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       {$L.next_action}
     </button>
     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-      <a class="dropdown-item" href="#">{$L.edit}</a>
-      <a class="dropdown-item" href="#">{$L.remove}</a>
+      <a class="dropdown-item" href="{$R->Path("EditPage",array($snippet->id))}">{$L.edit}</a>
+		  
+	  <form action="{$R->Path("EditPage",array($snippet->id))}" method="get">
+		<input type="hidden" name="_method" value="DELETE">
+      <button class="dropdown-item btn btn-link" type="submit">{$L.remove}</button></form>
     </div>
   </div>
 	{/if}

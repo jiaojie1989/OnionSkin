@@ -93,7 +93,7 @@ namespace OnionSkin
         }
         public function Normalize($str)
         {
-            return str_replace(" ","_",$str);
+            return str_replace(" ","_", str_replace(".","_",$str));
         }
     }
     class RouterPlugin
@@ -105,7 +105,7 @@ namespace OnionSkin
         }
         public function Normalize($str)
         {
-            return str_replace(" ","_",$str);
+            return str_replace(" ","_", str_replace(".","_",$str));
         }
         public function Route()
         {

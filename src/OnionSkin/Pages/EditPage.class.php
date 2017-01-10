@@ -53,6 +53,20 @@ class EditPage extends \OnionSkin\Page
         return $this->ok("main/NoteEdit.tpl");
     }
 
+    public function delete($request)
+    {
+        if(isset($request->Params["id"]))
+        {
+            $snippet=Engine::$DB->getRepository("\\OnionSkin\\Entities\\Snippet")->find($request->Params["id"][0]);
+            if(!isset($snippet) || !isset(Engine::$User) || $snippet->user->id!=Engine::$User->id){
+                return $this->redirect("\\OnionSkin\\Pages\\EditPage");
+            }
+            Engine::$DB->remove($snippet);
+            Engine::$DB->flush();
+        }
+        return $this->redirect("\\OnionSkin\\Pages\\EditPage");
+    }
+
     public function post($request)
     {
         $snippet=new \OnionSkin\Entities\Snippet();
@@ -71,7 +85,7 @@ class EditPage extends \OnionSkin\Page
             if(isset($request->Params["id"]))
             {
                 $snippet=Engine::$DB->getRepository("\\OnionSkin\\Entities\\Snippet")->find($request->Params["id"][0]);
-                if(!isset($snippet)){
+                if(!isset($snippet) || !isset(Engine::$User) || $snippet->user->id!=Engine::$User->id){
                     $_SESSION["form_edit"]=serialize($request->MappedModel);
                     return $this->redirect("\\OnionSkin\\Pages\\EditPage");
                 }
@@ -133,7 +147,7 @@ class EditPage extends \OnionSkin\Page
 
     private function normalize($str)
     {
-        return str_replace(" ","_",$str);
+        return str_replace(" ","_", str_replace(".","_",$str));
     }
 
     private function getModel()

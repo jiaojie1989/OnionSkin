@@ -31,7 +31,14 @@ namespace OnionSkin\Pages\MySnippets
                 $query=Engine::$DB->createQuery($sql)->setFirstResult($_GET["start"])->setMaxResults($_GET["length"]);
                 $total=Engine::$DB->createQuery("SELECT count(s.id) FROM OnionSkin\Entities\Snippet s WHERE s.user=".Engine::$User->id)->getSingleScalarResult();
                 header ('Content-Type', 'application/json');
-                return $this->json(array("draw"=>(int)$_GET["draw"],"recordsTotal"=>$total,"recordsFiltered"=>$total,"data"=>$query->getResult()));
+                $data=$query->getResult();
+                foreach($data as $d)
+                {
+                    $d->user=$d->user->username;
+                    if($d->folder!=null)
+                        $d->folder=$d->folder->id;
+                }
+                return $this->json(array("draw"=>(int)$_GET["draw"],"recordsTotal"=>$total,"recordsFiltered"=>$total,"data"=>$data));
             }
             $pageid=$request->Param["pageid"];
             if(!isset($pageid))

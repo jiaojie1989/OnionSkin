@@ -1,4 +1,5 @@
-﻿<html>
+﻿<!DOCTYPE html>
+<html>
 <head>
 <title>{block name=title}OnionSkin{/block}</title>
 	{block name="css"}{/block}
