@@ -15,9 +15,6 @@
 								{$Form->Password("password2",null,$L.password_confirm,["input"=>["tabindex"=>"4","required"=>"required","pattern"=>$H->cat(["(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).",$ldim,"6,",$rdim]),"title"=>$L.password_pattern]])}
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">{$L.sign_up}</button>
             {$Form->End()}
-            <a href="{$R->Path("Profile\RegisterPage")}" class="forgot-password">
-                {$L.never_reg}
-            </a>
         </div><!-- /card-container -->
     </div><!-- /container -->
 {/block}

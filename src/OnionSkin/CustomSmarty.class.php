@@ -238,7 +238,7 @@ namespace OnionSkin
             $ret.=$this->divEnd();
             return $ret;
         }
-        public function Select($id,$options,$label=null,$data=array())
+        public function Select($id,$options,$label=null,$data=array(),$value="")
         {
             $ret="";
             $dataInput=$data["select"];
@@ -272,7 +272,6 @@ namespace OnionSkin
             $dataInput=$this->appendThings($dataInput,"class","form-control");
             $dataInput=$this->appendThings($dataInput,"rows","3");
 
-            $value="";
             if(isset($this->model))
                 if($this->method=="get" && isset($this->model->refGET[$id]))
                 {

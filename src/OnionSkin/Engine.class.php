@@ -44,6 +44,11 @@ class Engine
             if(isset($_SESSION["User"])){
                 self::$User = self::$DB->find("\\OnionSkin\\Entities\\User",$_SESSION["User"]);
                 self::$Smarty->assign("user",self::$User);
+                if(isset(self::$User->lang)){
+                    $_SESSION["lang"]=self::$User->lang;
+                    self::$Smarty->clearAssign("L");
+                    self::$Smarty->assign("L",Lang::GetLang($_SESSION["lang"]));
+                }
             }
             self::$Smarty->assign("logged",!is_null(self::$User));
         }

@@ -8,8 +8,8 @@ class Lang {
     {
         if($langType===null && !isset(self::$instance))
             self::$instance=parse_ini_file("lang/lang.".self::langType().".ini",false);
-        elseif(!isset(self::$instance))
-            self::$instance=parse_ini_file("lang/lang".$langType."ini",false);
+        elseif($langType!=null)
+            self::$instance=parse_ini_file("lang/lang.".$langType.".ini",false);
         return self::$instance;
     }
     public static function L($code)
@@ -21,10 +21,10 @@ class Lang {
 
     private static function langType()
     {
-        $value=Engine::$Config["Defaults"]["Language"];
+        $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
         if(isset($_SESSION["lang"]))
-            $value=$_SESSION["lang"];
-        return $value;
+            $lang=$_SESSION["lang"];
+        return $lang;
     }
 
 }

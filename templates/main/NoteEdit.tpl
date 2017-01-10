@@ -7,7 +7,12 @@
 <h2 class="">{$L.newsnippet}</h2>
 
 <div class="container">
+	  {if isset($id)}
 	{$Form->Start("form-edit","EditPage","post",["role"=>"form","class"=>"form-horizontal"],array($id))}
+	  {else}
+	  
+	{$Form->Start("form-edit","EditPage","post",["role"=>"form","class"=>"form-horizontal"])}
+	  {/if}
 	{$Form->BindModel("form_edit")}
 	{$Form->AntiForgeryToken()}
 	{$Form->TextBox("name",

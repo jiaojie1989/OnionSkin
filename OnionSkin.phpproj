@@ -25,7 +25,7 @@
     <Compile Include="cache\5864528552c7b23337e01c290c13f3f182d76d03.database.tpl.php" />
     <Compile Include="config\configuration.ini" />
     <Compile Include="config\README.md" />
-    <Compile Include="lang\lang.cz.ini" />
+    <Compile Include="lang\lang.cs.ini" />
     <Compile Include="src\OnionSkin\Models\Model.class.php" />
     <Compile Include="src\OnionSkin\Models\SearchModel.class.php" />
     <Compile Include="src\OnionSkin\Models\SnippetModel.class.php" />
@@ -119,6 +119,7 @@
     <Content Include="config\router.ini" />
     <Content Include="js\loginpanel.js" />
     <Content Include="js\textarea_autogrown.js" />
+    <Content Include="lang\lang.en.ini" />
     <Content Include="MANUAL_CZ.MD" />
     <Content Include="styles\colorDark.scss" />
     <Content Include="styles\colorLight.scss" />

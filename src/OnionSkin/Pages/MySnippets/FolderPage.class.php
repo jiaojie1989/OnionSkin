@@ -16,17 +16,28 @@ namespace OnionSkin\Pages\MySnippets
 	{
         public function get($request)
         {
+            if(!isset(Engine::$User))
+                return $this->redirect("\\OnionSkin\\Pages\\EditPage");
+            $f=null;
+            if(isset($request->Params["folderid"][0])){
+                $f=$request->Params["folderid"][0];
+                if(!is_numeric($f))
+                    return $this->redirect("\\OnionSkin\\Pages\\EditPage");
+            }
+
+            $folder=Engine::$DB->getRepository("\\OnionSkin\\Entities\\Folder")->findOneBy(array("id"=>$f));
+            $childs=Engine::$DB->getRepository("\\OnionSkin\\Entities\\Folder")->findBy(array("user"=>Engine::$User,"parentFolder"=>$f));
+            $snippets=Engine::$DB->getRepository("\\OnionSkin\\Entities\\Snippet")->findBy(array("user"=>Engine::$User,"folder"=>$f));
+            Engine::$Smarty->assign("folder",$folder);
+            Engine::$Smarty->assign("childs",$childs);
+            Engine::$Smarty->assign("snippets",$snippets);
             return $this->ok("main/Folder.tpl");
-        }
-        public function getJson($request)
-        {
-            
         }
         public function put($request)
         {
 
         }
-        public function remove($request)
+        public function delete($request)
         {
             if(!isset(Engine::$User))
                 return $this->json(array(0,"error"=>Lang::L("error_not_logged")));
@@ -40,9 +51,15 @@ namespace OnionSkin\Pages\MySnippets
                 /**
                  * @var \OnionSkin\Entities\Folder $current
                  */
+            if(isset($current->parentFolder))
+                $c=$current->parentFolder->id;
+
             Engine::$DB->remove($current);
             Engine::$DB->flush();
-            return $this->json(array(1));
+            if(isset($c))
+                return $this->redirect("\\OnionSkin\\Pages\\MySnippets\\FolderPage",303,array($c));
+            else
+                return $this->redirect("\\OnionSkin\\Pages\\MySnippets\\FolderPage",303);
         }
         /**
          * @param \OnionSkin\Entities\Folder $folder
@@ -62,33 +79,35 @@ namespace OnionSkin\Pages\MySnippets
         public function post($request)
         {
             if(!isset(Engine::$User))
-                return $this->json(array(0,"error"=>Lang::L("error_not_logged")));
-            if(!isset($request->POST["name"]))
-                return $this->json(array(0,"error"=>Lang::L("error_folder_name")));
+                return $this->redirect("\\OnionSkin\\Pages\\EditPage");
+            if(!isset($request->POST["value"]))
+                return $this->redirect("\\OnionSkin\\Pages\\EditPage");
             $current=null;
-            if(isset($request->Params["folderid"]))
+            if(isset($request->Params["folderid"][0]))
             {
-                $current=Engine::$DB->getRepository("\\OnionSkin\\Entities\\Folder")->findOneBy(array("id"=>$request->Params["folderid"]));
+                $current=Engine::$DB->getRepository("\\OnionSkin\\Entities\\Folder")->findOneBy(array("id"=>$request->Params["folderid"][0]));
                 /**
                  * @var \OnionSkin\Entities\Folder $current
                  */
                 if($current==null)
-                    return $this->json(array(0,"error"=>Lang::L("error_folder_name")));
+                    return $this->redirect("\\OnionSkin\\Pages\\EditPage");
                 if($current->user->id!=Engine::$User->id)
-                    return $this->json(array(0,"error"=>Lang::L("error_folder_name")));
+                    return $this->redirect("\\OnionSkin\\Pages\\EditPage");
                 foreach($current->childsFolders as $v)
                 {
-                    if($v->name==$request->POST["name"])
-                        return $this->json(array(0,"error"=>Lang::L("error_folder_name")));
+                    if($v->name==$request->POST["value"])
+                        return $this->redirect("\\OnionSkin\\Pages\\EditPage");
                 }
             }
             $folder=new \OnionSkin\Entities\Folder();
             $folder->user=Engine::$User;
             $folder->parentFolder=$current;
-            $folder->name=$_POST["name"];
+            $folder->name=strip_tags($_POST["value"]);
             Engine::$DB->persist($folder);
             Engine::$DB->flush();
-            return $this->json(array(1));
+            if(isset($current))
+                return $this->redirect("\\OnionSkin\\Pages\\MySnippets\\FolderPage",303,array($current->id));
+            return $this->redirect("\\OnionSkin\\Pages\\MySnippets\\FolderPage");
         }
 	}
 }

@@ -19,7 +19,7 @@
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{$L.my_snippets}</a>
           <div class="dropdown-menu">
             <a href="{$R->Path("MySnippets\FolderPage")}" class="dropdown-item">{$L.folders}</a>
-            <a href="{$R->Path("MySnippets\TypePage")}" class="dropdown-item">{$L.file_types}</a>
+            <a href="#" class="dropdown-item disabled">{$L.file_types}</a>
 			  <div class="dropdown-divider"></div>
             <a href="{$R->Path("MySnippets\AllSnippetsPage")}" class="dropdown-item">{$L.display_all}</a>
           </div>

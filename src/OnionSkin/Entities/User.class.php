@@ -36,6 +36,11 @@ class User {
      */
 	public $style="light";
 	/**
+     * @Column(type="string", length=2, nullable=true)
+     * @var string
+     */
+	public $lang;
+	/**
      * @Column(type="datetime", name="date_created", nullable=false)
      * @var \DateTime
      */
@@ -114,7 +119,7 @@ class User {
              * @var Folder $value
              * */
             if($value->parentFolder==null)
-                $this->folders($array,$value," ");
+                $array=$this->folders($array,$value,"&nbsp;&nbsp;&nbsp;");
         return $array;
     }
     /**
@@ -126,6 +131,7 @@ class User {
     {
         $array[]=array($folder->id,$prefix.$folder->name);
         foreach($folder->childsFolders as $value)
-            $this->folders($array,$value,$prefix." ");
+            $array=$this->folders($array,$value,$prefix."&nbsp;&nbsp;&nbsp;");
+        return $array;
     }
 }

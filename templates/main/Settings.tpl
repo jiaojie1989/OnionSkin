@@ -6,7 +6,8 @@
 <h2 class="mt-3">{$L.settings}</h2>
 	{$Form->Start("form-settings","Profile\\SettingsPage","post",["role"=>"form","class"=>"form-horizontal"])}
 	{$Form->AntiForgeryToken()}
-	{$Form->Select("style",["light"=>"Light Style","dark"=>"Dark Style"],"Style",["select"=>["tabindex"=>"1"]])}
+	{$Form->Select("style",["light"=>"Light Style","dark"=>"Dark Style"],"Style",["select"=>["tabindex"=>"1"]],$style)}
+	{$Form->Select("lang",["en"=>"English","cs"=>"Czech"],$L.language,["select"=>["tabindex"=>"1"]],$lang)}
 	{$Form->Button("settings_submit",$L.save,["tabindex"=>"2","class"=>"btn-success"])}
 	{$Form->End()}
   </div>
