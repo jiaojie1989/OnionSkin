@@ -7,7 +7,7 @@
 <h2 class="">{$L.newsnippet}</h2>
 
 <div class="container">
-	{$Form->Start("form-edit","EditPage","post",["role"=>"form","class"=>"form-horizontal"])}
+	{$Form->Start("form-edit","EditPage","post",["role"=>"form","class"=>"form-horizontal"],array($id))}
 	{$Form->BindModel("form_edit")}
 	{$Form->AntiForgeryToken()}
 	{$Form->TextBox("name",

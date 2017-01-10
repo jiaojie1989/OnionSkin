@@ -43,7 +43,30 @@ class Folder {
      * @var Snippet[]
      */
     public $snippets;
+	/**
+     * @Column(type="datetime",name="date_added",nullable=false)
+     */
+	public $createdTime;
+	/**
+     * @Column(type="datetime",name="date_modified",nullable=false)
+     */
+	public $modifiedTime;
 
+    /**
+     * @PrePersist
+     */
+    public function onPrePersistSetDateTime()
+    {
+        $this->createdTime=new \DateTime();
+        $this->modifiedTime= new \DateTime();
+    }
+    /**
+     * @PreUpdate
+     */
+    public function onPreUpdateSetDateTime()
+    {
+        $this->modifiedTime=new \DateTime();
+    }
 
     public function parent()
     {

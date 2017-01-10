@@ -17,7 +17,8 @@
     "leafo/scssphp": "0.6.6",
     "twbs/bootstrap": "4.0.0-alpha.6",
     "matthiasmullie/minify": "*",
-    "components/highlightjs" :  "9.8.0"
+    "components/highlightjs": "9.8.0",
+    "vaibhavpandeyvpz/doctrine-datatables": "*"
   },
   "autoload": {"psr-4": {"OnionSkin\\": "src/"}}
 

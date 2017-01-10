@@ -16,7 +16,7 @@ namespace OnionSkin\Pages\MySnippets
 	{
         public function get($request)
         {
-
+            return $this->ok("main/Folder.tpl");
         }
         public function getJson($request)
         {

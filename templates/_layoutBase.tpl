@@ -5,10 +5,11 @@
 </head>
 <body class="{$body_class}">
 	{block name="js_start"}{/block}
-	<nav class="navbar navbar-toggleable-md {$navbar_color}">
-		  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-			</button>
+	<nav class="navbar navbar-toggleable-md hidden-print {$navbar_color}">
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
 	<a class="navbar-brand" href="{$R->Path("@/")}">{$L.onionskin}</a>
       <ul class="navbar-nav nav mt-2   mt-md-0">
         <li class="nav-item"><a class="nav-link" href="{$R->Path("PublicSnippetsPage")}">{$L.public_snippets}</a></li>
@@ -50,7 +51,7 @@
   <form class="form-inline my-2 my-lg-0" method="get" action="{$R->Path("Profile\RegisterPage")}">
     <button class="btn btn-sm align-middle btn-outline-success" type="submit">{$L.sign_up}</button>
   </form>
-			{/if}
+			{/if}</div>
 </nav>
 	{block name="body"}{/block}
 	{block name="js_end"}{/block}

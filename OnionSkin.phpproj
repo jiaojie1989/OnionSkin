@@ -129,6 +129,7 @@
     <Content Include="templates\login\Login.tpl" />
     <Content Include="templates\login\LoginRegister.tpl" />
     <Content Include="templates\login\Register.tpl" />
+    <Content Include="templates\main\Folder.tpl" />
     <Content Include="templates\main\MySnippets.tpl" />
     <Content Include="templates\main\PublicSnippets.tpl" />
     <Content Include="templates\main\Settings.tpl" />

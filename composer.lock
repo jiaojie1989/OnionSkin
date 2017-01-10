@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9f4034e5be699f005d21f4bfd05c0d76",
+    "content-hash": "44aa4c64e4d8fccc63536c8a46a80399",
     "packages": [
         {
             "name": "components/highlightjs",
@@ -1176,6 +1176,46 @@
                 "web"
             ],
             "time": "2017-01-06T16:41:52+00:00"
+        },
+        {
+            "name": "vaibhavpandeyvpz/doctrine-datatables",
+            "version": "1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vaibhavpandeyvpz/doctrine-datatables.git",
+                "reference": "f6ff941fdaa00fb06ef764b9a31113dd1eea051c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vaibhavpandeyvpz/doctrine-datatables/zipball/f6ff941fdaa00fb06ef764b9a31113dd1eea051c",
+                "reference": "f6ff941fdaa00fb06ef764b9a31113dd1eea051c",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/dbal": "~2.5",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "doctrine/orm": "~2.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Doctrine\\DataTables\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Helper library to implement doctrine powered server-side processing for jquery-datatables with joins, search, filtering and ordering.",
+            "homepage": "http://vaibhavpandeyvpz.github.io/doctrine-datatables",
+            "keywords": [
+                "datatables",
+                "doctrine",
+                "jquery"
+            ],
+            "time": "2016-11-05T04:20:23+00:00"
         }
     ],
     "packages-dev": [],

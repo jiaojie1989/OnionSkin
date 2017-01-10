@@ -30,11 +30,25 @@ class EditPage extends \OnionSkin\Page
     }
     private function getEdit($request)
     {
-        $Snippet=Engine::$DB->getRepository("\OnionSkin\Entities\Snippet")->find($request->Params["id"]);
-        if(!isset($request->Params["name"]) || $request->Params["name"]!=$this->normalize($Snippet->name))
-            return $this->redirect("\OnionSkin\Pages\EditPage",303,array($request->Params["id"],$request->Params["name"]));
+        $Snippet=Engine::$DB->getRepository("\OnionSkin\Entities\Snippet")->find($request->Params["id"][0]);
+        if(!isset($request->Params["name"]) || $request->Params["name"][0]!=$this->normalize($Snippet->title))
+            return $this->redirect("\OnionSkin\Pages\EditPage",303,array($request->Params["id"][0],$this->normalize($Snippet->title)));
+        Engine::$Smarty->assign("id",$Snippet->id);
         if(!isset($_SESSION["form_edit"]))
-            $_SESSION["form_edit"]=serialize($Snippet);
+        {
+            $s = new \OnionSkin\Models\SnippetModel();
+            $s->syntax=$Snippet->syntax;
+            $s->name=$Snippet->title;
+            $s->snippet=$Snippet->text;
+            $s->visibility=$Snippet->accessLevel;
+            $s->folder=$Snippet->folder->id;
+            $s->refPOST["folder"]="folder";
+            $s->refPOST["syntax"]="syntax";
+            $s->refPOST["name"]="name";
+            $s->refPOST["snippet"]="snippet";
+            $s->refPOST["visibility"]="visibility";
+            $_SESSION["form_edit"]=serialize($s);
+        }
 
         return $this->ok("main/NoteEdit.tpl");
     }
@@ -56,7 +70,7 @@ class EditPage extends \OnionSkin\Page
         {
             if(isset($request->Params["id"]))
             {
-                $snippet=Engine::$DB->getRepository("\\OnionSkin\\Entities\\Snippet")->find($request->Params["id"]);
+                $snippet=Engine::$DB->getRepository("\\OnionSkin\\Entities\\Snippet")->find($request->Params["id"][0]);
                 if(!isset($snippet)){
                     $_SESSION["form_edit"]=serialize($request->MappedModel);
                     return $this->redirect("\\OnionSkin\\Pages\\EditPage");

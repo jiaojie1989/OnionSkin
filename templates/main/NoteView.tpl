@@ -3,11 +3,17 @@
 {block name="innerbody"}
 <div class="card  mb-3 mt-3">
   <div class="card-block">
-<h2 class="">{$snippet->title|escape}</h2>
-<p><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {if isset($snippet->user)}{$snippet->user->username|escape}{else}Anonym{/if}</p>
+<h2 class="">{$snippet->title|escape} </h2>
+	  
+  <h3><small class="text-muted"> <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {if isset($snippet->user)}{$snippet->user->username|escape}{else}Anonym{/if}</small></h3>
+
 <div class="limit-card card">
-  <div class="card-header"><div class="w-50 float-left">
+  <div class="card-header">
+	{if $snippet->isOwner()}
+	  <div class="w-50 float-left">
 	  {$H->breadcrumbS($snippet)}</div>
+	  {else}
+	{/if}
 <div class="btn-group float-right">
   <a href="#" class="btn btn-primary">Raw</a>
   <a href="#" class="btn btn-primary">Print</a>

@@ -22,7 +22,7 @@ namespace OnionSkin\Pages {
              */
             if(!isset($snippet)
                 || (!isset(Engine::$User) && $snippet->accessLevel==0) ||
-                   ($snippet->accessLevel==0 || $snippet->user->id !=Engine::$User->id ))
+                   ($snippet->accessLevel==0 && $snippet->user->id !=Engine::$User->id ))
                 return $this->redirect("@/");
             Engine::$Smarty->assign("snippet",$snippet);
             return $this->ok("main/NoteView.tpl");

@@ -166,11 +166,11 @@ namespace OnionSkin
          * @param array $attr
          * @return string
          */
-        public function Start($id,$Page,$method,$attr=array())
+        public function Start($id,$Page,$method,$attr=array(),$paths=array())
         {
             $this->page="\\OnionSkin\\Pages\\".$Page;
             $this->method=$method;
-            $ret='<form id="'.$id.'" action="'.Routing\Router::Path($this->page,null,strtoupper($method)).'" method="'.$method.'"';
+            $ret='<form id="'.$id.'" action="'.Routing\Router::Path($this->page,$paths,strtoupper($method)).'" method="'.$method.'"';
             foreach($attr as $key=>$value)
             {
                 if($key=="class" && strpos($value, 'form-horizontal') !== false)
@@ -210,8 +210,8 @@ namespace OnionSkin
                     $v=$this->model->Errors[$this->model->refGET[$id]];
             if($v!=null)
             {
-                $data["wrapper"]=$this->appendThings($data["wrapper"],"class","has-error has-feedback");
-                $feed='<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>';
+                $dataInput=$this->appendThings($dataInput,"class","form-control form-control-danger");
+                $data["wrapper"]=$this->appendThings($data["wrapper"],"class","has-danger");
             }
             else
                 $v="";

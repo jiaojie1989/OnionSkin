@@ -2,5 +2,3 @@ $(document).ready(function(){loadProfile()});function getLocalProfile(callback){
 function loadProfile(){if(!supportsHTML5Storage()){return!1}
 getLocalProfile(function(profileImgSrc,profileName,profileReAuthEmail){$("#profile-img").attr("src",profileImgSrc);$("#profile-name").html(profileName);$("#reauth-email").html(profileReAuthEmail);$("#inputEmail").hide();$("#remember").hide()})}
 function supportsHTML5Storage(){try{return 'localStorage' in window&&window.localStorage!==null}catch(e){return!1}}
-function testLocalStorageData(){if(!supportsHTML5Storage()){return!1}
-localStorage.setItem("PROFILE_IMG_SRC","//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120");localStorage.setItem("PROFILE_NAME","César Izquierdo Tello");localStorage.setItem("PROFILE_REAUTH_EMAIL","oneaccount@gmail.com")}

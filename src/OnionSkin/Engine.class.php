@@ -32,6 +32,7 @@ class Engine
 		session_start();
         $dbconf= \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(array("src/OnionSkin/Entities"),self::$debug,null,new \Doctrine\Common\Cache\ArrayCache());
         self::$DB=\Doctrine\ORM\EntityManager::create($CONFIG["Database"],$dbconf);
+        self::$DB->getConfiguration()->addEntityNamespace('OS', "OnionSkin\\Entities");
         $CONFIG["Database"]=null;
 		self::$Config=$CONFIG;
 		self::$Smarty = new CustomSmarty();

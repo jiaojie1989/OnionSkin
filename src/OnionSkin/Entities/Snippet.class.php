@@ -116,6 +116,8 @@ class Snippet
     public function isOwner()
     {
         $user=\OnionSkin\Engine::$User;
+        if(!isset($user))
+            return false;
         return $this->user->id==$user->id;
     }
 }
