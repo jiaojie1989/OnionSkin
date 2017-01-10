@@ -30,11 +30,14 @@
     <Compile Include="src\OnionSkin\Models\SearchModel.class.php" />
     <Compile Include="src\OnionSkin\Models\SnippetModel.class.php" />
     <Compile Include="src\OnionSkin\Pages\Errors.class.php" />
+    <Compile Include="src\OnionSkin\Pages\GetPage.class.php" />
     <Compile Include="src\OnionSkin\Pages\MySnippets\AllSnippetsPage.class.php" />
     <Compile Include="src\OnionSkin\Pages\MySnippets\FolderPage.class.php" />
+    <Compile Include="src\OnionSkin\Pages\PrintPage.class.php" />
     <Compile Include="src\OnionSkin\Pages\Profile\RegisterPage.class.php" />
     <Compile Include="src\OnionSkin\Pages\Profile\SettingsPage.class.php" />
     <Compile Include="src\OnionSkin\Pages\PublicSnippetsPage.class.php" />
+    <Compile Include="src\OnionSkin\Pages\RawPage.class.php" />
     <Compile Include="src\OnionSkin\Pages\ViewPage.class.php" />
     <Compile Include="src\OnionSkin\Routing\Annotations\AllowHTML.class.php" />
     <Compile Include="src\OnionSkin\Routing\Annotations\Enum.class.php" />
@@ -131,6 +134,8 @@
     <Content Include="templates\login\Register.tpl" />
     <Content Include="templates\main\Folder.tpl" />
     <Content Include="templates\main\MySnippets.tpl" />
+    <Content Include="templates\main\NotePrint.tpl" />
+    <Content Include="templates\main\NoteRaw.tpl" />
     <Content Include="templates\main\PublicSnippets.tpl" />
     <Content Include="templates\main\Settings.tpl" />
     <Content Include="templates\_centered.tpl" />
