@@ -3,6 +3,8 @@
 namespace OnionSkin\Routing\Annotations
 {
 	/**
+     * Map variable from Path params.
+     *
      * @Annotation
      * @Target({"PROPERTY"})
      */

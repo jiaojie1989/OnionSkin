@@ -3,24 +3,29 @@
 namespace OnionSkin\Exceptions
 {
 	/**
-	 * ErrorModel short summary.
-	 *
-	 * ErrorModel description.
-	 *
-	 * @version 1.0
-	 * @author Fry
 	 */
 	class ErrorModel
 	{
+        /** @var bool
+         */
         public $Severe;
+
+        /** @var string
+         */
         public $LngCode;
+
+        /** @var string[]
+         */
         public $LngParams;
+
+        /** @var string
+         */
         public $Reason;
         /**
-         * 
-         * @param bool $severe 
-         * @param string $variable 
-         * @param string $lngCode 
+         *
+         * @param bool $severe
+         * @param string $variable
+         * @param string $lngCode
          */
         public function __construct($severe,$lngCode,$lngParams=array(),$reason=null)
         {
@@ -30,9 +35,5 @@ namespace OnionSkin\Exceptions
             $this->Reason=$reason;
         }
 
-        public function hasErrors()
-        {
-            
-        }
 	}
 }

@@ -13,6 +13,13 @@ body, html {
     background-color: #292b2c !important;
     color: white !important;
 }
+.help-block.form-control-feedback.invalid + .help-block.form-control-feedback,.help-block.form-control-feedback.valid + .help-block.form-control-feedback
+{
+    display: none;
+}
+.help-block{
+    width:100%;
+}
 @media print {
 body, html{background-image: none; background-color: white;}
 .card .card-block, input, select, option, textarea

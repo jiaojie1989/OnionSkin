@@ -3,18 +3,12 @@
 namespace OnionSkin\Routing
 {
 	/**
-     * Route short summary.
-     *
-     * Route description.
-     *
-     * @version 1.0
-     * @author Fry
+     * 
      */
 	class Route
 	{
         /**
-         * Summary of $methods
-         * @var array
+         * @var string[]
          */
         private $methods;
         /**
@@ -22,26 +16,37 @@ namespace OnionSkin\Routing
          * @var RoutePath[]
          */
         private $paths;
+
+        /**
+         * @var string
+         */
         private $page;
+
+        /**
+         * @var string
+         */
         private $model;
 
         /**
-         * Summary of getPage
-         * @return mixed
+         * Return defined page as string (namespace + classname)
+         * @return string
          */
         public function getPage()
         {
             return $this->page;
         }
+
         /**
-         * Summary of getMethods
-         * @return array
+         * @return string[]
          */
         public function getMethods()
         {
             return $this->methods;
         }
 
+        /**
+         * @param string[] $data
+         */
         public function __construct($data)
         {
             $this->methods=explode(";",$data["methods"]);
@@ -101,18 +106,37 @@ namespace OnionSkin\Routing
         }
 
 	}
+
+    /**
+     *
+     */
     class RoutePath
     {
+        /**
+         * @var string
+         */
         private $path;
+
+        /**
+         * @var string
+         */
         private $pathRegex;
+
+        /**
+         * @var RoutePathParameter[]
+         */
         private $params=array();
 
+
+        /**
+         * @return RoutePathParameter[]
+         */
         public function getParams()
         {
             return $this->params;
         }
+
         /**
-         * Summary of __construct
          * @param string $path
          */
         public function __construct($path)
@@ -130,6 +154,11 @@ namespace OnionSkin\Routing
             $this->pathRegex=preg_replace("/\{[a-zA-Z0-9:]*\}/","([^\/]*)",$this->pathRegex);
         }
 
+        /**
+         * Return path.
+         * @param string[] $vars
+         * @return string
+         */
         public function getPath($vars=null)
         {
             $path=$this->path;
@@ -138,8 +167,11 @@ namespace OnionSkin\Routing
                     $path=preg_replace("/\{[a-zA-Z0-9:]*\}/",$var,$path,1);
             return $path;
         }
+
         /**
+         * Validate request
          * @param Request request
+         * @return boolean
          */
         public function valide($request)
         {
@@ -153,7 +185,9 @@ namespace OnionSkin\Routing
                     return false;
             return true;
         }
+
         /**
+         * Route request.
          * @param Request $request
          */
         public function route($request)
@@ -166,19 +200,46 @@ namespace OnionSkin\Routing
             $request->Params=$ret;
         }
     }
+
+    /**
+     * Parameter of path.
+     */
     class RoutePathParameter
     {
+        /**
+         * @var string
+         */
         private $param;
+
+        /**
+         * @var string Enum["int","float","double","long","string"]
+         */
         private $type;
+
+        /**
+         * @var string
+         */
         public $name;
+
+        /**
+         * @param string $param
+         */
         public function __construct($param)
         {
             $this->param=$param;
-            preg_match("/[^{][a-zA-Z0-9]*[^:]/",$param,$this->name);
-            preg_match("/(?<=:).[a-zA-Z0-9]*/",$param,$this->type);
-            $this->name=$this->name[0];
-            $this->type=$this->type[0];
+            $matched_name=array();
+            $matched_type=array();
+            preg_match("/[^{][a-zA-Z0-9]*[^:]/",$param,$matched_name);
+            preg_match("/(?<=:).[a-zA-Z0-9]*/",$param,$matched_type);
+            $this->name=$matched_name[0];
+            $this->type=$matched_type[0];
         }
+
+        /**
+         * Validate value based on parameter type.
+         * @param mixed $value
+         * @return boolean
+         */
         public function valide($value)
         {
             switch($this->type)

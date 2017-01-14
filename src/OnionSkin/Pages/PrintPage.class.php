@@ -26,7 +26,8 @@ namespace OnionSkin\Pages
                    ($snippet->accessLevel==0 && $snippet->user->id !=Engine::$User->id ))
                 return $this->redirect("@/");
             Engine::$Smarty->assign("snippet",$snippet);
-            return $this->ok("main/NotePrint.tpl");
+            echo htmlspecialchars($snippet->text);
+            return die();
         }
 	}
 }

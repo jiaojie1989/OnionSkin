@@ -40,7 +40,7 @@ namespace OnionSkin\Pages\MySnippets
                 }
                 return $this->json(array("draw"=>(int)$_GET["draw"],"recordsTotal"=>$total,"recordsFiltered"=>$total,"data"=>$data));
             }
-            $pageid=$request->Param["pageid"];
+            $pageid=$request->Params["pageid"];
             if(!isset($pageid))
                 $pageid=1;
             if($pageid<1)

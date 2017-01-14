@@ -8,6 +8,13 @@ body, html {
     background-image: linear-gradient(rgb(184, 225, 242), rgb(92, 177, 113));
     background-color: rgb(92,177,113);
 }
+.help-block.form-control-feedback.invalid + .help-block.form-control-feedback,.help-block.form-control-feedback.valid + .help-block.form-control-feedback
+{
+    display: none;
+}
+.help-block{
+    width:100%;
+}
 @media print {
 body, html{background-image: none; background-color: white;}
 }

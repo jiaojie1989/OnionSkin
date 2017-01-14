@@ -3,6 +3,8 @@
 namespace OnionSkin\Routing\Annotations
 {
 	/**
+     * Annotation for Model.
+     *
      * @Annotation
      * @Target({"PROPERTY"})
      */

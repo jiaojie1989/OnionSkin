@@ -3,17 +3,10 @@
 namespace OnionSkin\Exceptions
 {
 	/**
-	 * ValidationException short summary.
-	 *
-	 * ValidationException description.
-	 *
-	 * @version 1.0
-	 * @author Fry
 	 */
 	class ValidationException extends \Exception
 	{
         /**
-         * Summary of $error
          * @var \OnionSkin\Exceptions\ErrorModel
          */
         public $error;

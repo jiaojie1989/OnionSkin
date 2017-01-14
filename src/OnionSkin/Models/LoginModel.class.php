@@ -7,12 +7,6 @@ namespace OnionSkin\Models
     use OnionSkin\Routing\Annotations\StringLength;
     use OnionSkin\Routing\Annotations\Validate;
 	/**
-	 * Login short summary.
-	 *
-	 * Login description.
-	 *
-	 * @version 1.0
-	 * @author Fry
 	 */
 	class LoginModel extends Model
 	{

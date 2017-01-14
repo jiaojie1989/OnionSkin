@@ -70,7 +70,7 @@ class EditPage extends \OnionSkin\Page
     public function post($request)
     {
         $snippet=new \OnionSkin\Entities\Snippet();
-        $syntax=json_decode(file_get_contents("config/languages.json"),true);
+        $syntax=json_decode(file_get_contents("../config/languages.json"),true);
         $model=$request->MappedModel;
         /**
          * @var \OnionSkin\Models\SnippetModel $model
@@ -157,7 +157,7 @@ class EditPage extends \OnionSkin\Page
     }
     private function loadSyntax()
     {
-        $syntax=json_decode(file_get_contents("config/languages.json"),true);
+        $syntax=json_decode(file_get_contents("../config/languages.json"),true);
         \OnionSkin\Engine::$Smarty->assign("syntax_list",$syntax);
     }
 }

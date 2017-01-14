@@ -7,12 +7,6 @@ namespace OnionSkin\Models
     use OnionSkin\Routing\Annotations\StringLength;
     use OnionSkin\Routing\Annotations\Validate;
 	/**
-	 * RegisterModel short summary.
-	 *
-	 * RegisterModel description.
-	 *
-	 * @version 1.0
-	 * @author Fry
 	 */
 	class RegisterModel extends Model
 	{

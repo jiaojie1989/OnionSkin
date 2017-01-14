@@ -2,47 +2,82 @@
 
 namespace OnionSkin\Routing
 {
+    use OnionSkin\Engine;
 	/**
-	 * Request short summary.
-	 *
-	 * Request description.
-	 *
-	 * @version 1.0
-	 * @author Fry
 	 */
 	class Request
 	{
         /**
-         *
+         * Relative path from website root.
          * @var string
          */
         public $Path;
 
         /**
-         * @var \OnionSkin\Page
+         * Coresponding page to request
+         *
+         * Is null before routing request thru Router.
+         * @see \OnionSkin\Routing\Router
+         * @var \OnionSkin\Page|null
          */
         public $Page;
 
         /**
-         * Summary of $MappedModel
-         * @var \OnionSkin\Models\Model
+         * Mapped model of request.
+         *
+         * Is null before routing request thru Router.
+         * @see \OnionSkin\Routing\Router
+         * @var \OnionSkin\Models\Model|\null
          */
         public $MappedModel;
 
+        /**
+         * GET Paramaters
+         * @var string Enum["GET","POST","DELETE","PUT","PATCH"]
+         */
         public $Method;
 
+        /**
+         * Paramaters from path/url.
+         * @var array
+         */
         public $Params;
 
+        /**
+         * GET Paramaters
+         * @var array
+         */
         public $GET;
 
+        /**
+         * POST Paramaters
+         * @var array
+         */
         public $POST;
 
+        /**
+         * @var array
+         */
         public $AcceptLanguages;
 
+        /**
+         * @var array
+         */
         public $Accept;
 
+        /**
+         * @var array
+         */
         public $ContentType;
 
+        /**
+         * Create new Request from current scope.
+         *
+         * Magic methods:
+         * _method = Set request method. This is little hack so <form> or <a> can send other request then GET or POST
+         *
+         * @return Request
+         */
         public static function Current()
         {
             $request = new Request();
@@ -54,11 +89,15 @@ namespace OnionSkin\Routing
                 $request->Method=$_POST['_method'];
             $request->AcceptLanguages=$_SERVER['HTTP_ACCEPT_LANGUAGE'];
             $request->Accept=$_SERVER['HTTP_ACCEPT'];
+            if(isset($_SERVER["CONTENT_TYPE"]))
             $request->ContentType=$_SERVER["CONTENT_TYPE"];
             $request->GET=$_GET;
             $request->POST=$_POST;
             return $request;
         }
+        /**
+         * Execute request.
+         */
         public function Execute()
         {
             $mtd=strtolower($this->Method);
@@ -66,6 +105,22 @@ namespace OnionSkin\Routing
                 $this->Page->redirect("@/");
             \OnionSkin\Engine::$Smarty->assign("Request",$this);
             $this->Page->{$mtd}($this);
+        }
+        /**
+         * Check if user has rights to this page.
+         * @return boolean
+         */
+        public function CheckRights()
+        {
+            if(is_null($this->Page))
+                return false;
+            if($this->Page->RequireLogged && is_null(Engine::$User))
+                return false;
+            if($this->Page->RequireAdmin && (is_null(Engine::$User) || !Engine::$User->admin))
+                return false;
+            if(!$this->Page->OnCheckRights())
+                return false;
+            return true;
         }
 	}
 }

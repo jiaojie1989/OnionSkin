@@ -3,6 +3,8 @@
 namespace OnionSkin\Entities;
 
 /**
+ * Folder entity for persistace.
+ * 
  * @Entity
  * @Table(name="folders")
  * @HasLifecycleCallbacks

@@ -67,8 +67,11 @@
     <Compile Include="src\OnionSkin\Routing\Router.class.php" />
     <Compile Include="src\OnionSkin\Routing\Request.class.php" />
     <Compile Include="src\OnionSkin\Smarty\FormPlugin.class.php" />
+    <Compile Include="src\OnionSkin\Smarty\HelperPlugin.class.php" />
     <Compile Include="src\OnionSkin\Smarty\PaginationPlugin.class.php" />
+    <Compile Include="src\OnionSkin\Smarty\RouterPlugin.class.php" />
     <Compile Include="src\OnionSkin\UtilsINI.class.php" />
+    <Compile Include="src\OnionSkin\UtilsStr.class.php" />
     <Compile Include="src\onionskin_autoload.php" />
     <Compile Include="templates\main\NoteEdit.tpl" />
     <Compile Include="templates\main\NoteView.tpl" />
@@ -76,7 +79,7 @@
     <Compile Include="templates_c\c3ab73c3ec3540588b0b5314f615c309d90aabb1_0.file.database.tpl.cache.php" />
     <Compile Include="templates_c\ebd6527cd244774e6ff00d65809aa4319007b949_0.file.@40layoutInstall.tpl.cache.php" />
     <Compile Include=".gitignore" />
-    <Compile Include="index.php" />
+    <Compile Include="public\index.php" />
     <Compile Include="LICENSE" />
     <Compile Include="README.md" />
   </ItemGroup>
@@ -90,8 +93,9 @@
     <Folder Include="documentation\en" />
     <Folder Include="documentation" />
     <Folder Include="js\" />
-    <Folder Include="lang" />
+    <Folder Include="lang\" />
     <Folder Include="libs" />
+    <Folder Include="public\" />
     <Folder Include="src\OnionSkin\Entities" />
     <Folder Include="src\OnionSkin\Exceptions\" />
     <Folder Include="src\OnionSkin\Models\" />
@@ -121,6 +125,7 @@
     <Content Include="js\textarea_autogrown.js" />
     <Content Include="lang\lang.en.ini" />
     <Content Include="MANUAL_CZ.MD" />
+    <Content Include="public\.htaccess" />
     <Content Include="styles\colorDark.scss" />
     <Content Include="styles\colorLight.scss" />
     <Content Include="styles\onionskin\glyphicon.scss" />

@@ -8,8 +8,8 @@
 			{$Form->Start("login-form","Profile\\LoginPage","post",["class"=>"form-signin", "role"=>"form"])}
 			{$Form->BindModel("form_login")}
 			{$Form->AntiForgeryToken()}
-								{$Form->TextBox("username",null,$L.username,["input"=>["tabindex"=>"1","required"=>"required","pattern"=>$H->cat([".",$ldim,"3,",$rdim]),"title"=>$L.three_character_minimal]])}
-								{$Form->Password("password",null,$L.password,["input"=>["tabindex"=>"2","required"=>"required","pattern"=>$H->cat(["(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).",$ldim,"6,",$rdim]),"title"=>$L.password_pattern]])}
+								{$Form->TextBox("username",null,$L.username,["help"=>$H->cat("* ",$L.requiredfield),"input"=>["tabindex"=>"1","required"=>"required","pattern"=>$H->cat([".",$ldim,"3,",$rdim]),"title"=>$L.three_character_minimal]])}
+								{$Form->Password("password",null,$L.password,["help"=>$H->cat("* ",$L.requiredfield),"input"=>["tabindex"=>"2","required"=>"required","pattern"=>$H->cat(["(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).",$ldim,"6,",$rdim]),"title"=>$L.password_pattern]])}
 								{$Form->CheckBox("rememberme",$L.remember_me,["wrapper"=>["class"=>"text-center"],"input"=>["tabindex"=>"3"]])}
     
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">{$L.sign_in}</button>

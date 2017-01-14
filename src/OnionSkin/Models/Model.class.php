@@ -6,21 +6,32 @@ namespace OnionSkin\Models
     use OnionSkin\Exceptions\ValidationException;
     use Doctrine\Common\Annotations\AnnotationRegistry;
     /**
-     * Model short summary.
-     *
-     * Model description.
-     *
-     * @version 1.0
-     * @author Fry
      */
     abstract class Model
     {
+        /**
+         * @var string
+         */
         public $Page;
 
-        public $refPOST=array(),$refGET=array();
+        /**
+         * @var string[]
+         */
+        public $refPOST=array();
 
+        /**
+         * @var string[]
+         */
+        public $refGET=array();
+
+        /**
+         * @var array
+         */
         public $Errors=array();
 
+        /**
+         * @var string
+         */
         public $AntiForgetoryToken;
 
         function __construct($Page) {
@@ -32,6 +43,10 @@ namespace OnionSkin\Models
             return array("refPOST","refGET","Errors","Page");
         }
 
+        /**
+         * @param mixed $Page 
+         * @return boolean
+         */
         public function validateAntiForgetoryToken($Page)
         {
             $this->AntiForgetoryToken=$_POST["csrf_token"];
@@ -56,23 +71,22 @@ namespace OnionSkin\Models
         private static $reader;
 
         /**
-         * @param mixed $model
          * @param \OnionSkin\Routing\Request $request
          */
         public static function MapRequest($request)
         {
             if(is_null(self::$reader))
             {
-                AnnotationRegistry::registerFile("src/OnionSkin/Routing/Annotations/Get.class.php");
-                AnnotationRegistry::registerFile("src/OnionSkin/Routing/Annotations/Post.class.php");
-                AnnotationRegistry::registerFile("src/OnionSkin/Routing/Annotations/Path.class.php");
-                AnnotationRegistry::registerFile("src/OnionSkin/Routing/Annotations/NumericRange.class.php");
-                AnnotationRegistry::registerFile("src/OnionSkin/Routing/Annotations/Required.class.php");
-                AnnotationRegistry::registerFile("src/OnionSkin/Routing/Annotations/StringLength.class.php");
-                AnnotationRegistry::registerFile("src/OnionSkin/Routing/Annotations/Validate.class.php");
-                AnnotationRegistry::registerFile("src/OnionSkin/Routing/Annotations/Enum.class.php");
-                AnnotationRegistry::registerFile("src/OnionSkin/Routing/Annotations/PostValidate.class.php");
-                AnnotationRegistry::registerFile("src/OnionSkin/Routing/Annotations/AllowHTML.class.php");
+                AnnotationRegistry::registerFile("../src/OnionSkin/Routing/Annotations/Get.class.php");
+                AnnotationRegistry::registerFile("../src/OnionSkin/Routing/Annotations/Post.class.php");
+                AnnotationRegistry::registerFile("../src/OnionSkin/Routing/Annotations/Path.class.php");
+                AnnotationRegistry::registerFile("../src/OnionSkin/Routing/Annotations/NumericRange.class.php");
+                AnnotationRegistry::registerFile("../src/OnionSkin/Routing/Annotations/Required.class.php");
+                AnnotationRegistry::registerFile("../src/OnionSkin/Routing/Annotations/StringLength.class.php");
+                AnnotationRegistry::registerFile("../src/OnionSkin/Routing/Annotations/Validate.class.php");
+                AnnotationRegistry::registerFile("../src/OnionSkin/Routing/Annotations/Enum.class.php");
+                AnnotationRegistry::registerFile("../src/OnionSkin/Routing/Annotations/PostValidate.class.php");
+                AnnotationRegistry::registerFile("../src/OnionSkin/Routing/Annotations/AllowHTML.class.php");
                 self::$reader = new \Doctrine\Common\Annotations\CachedReader(new \Doctrine\Common\Annotations\AnnotationReader(),new \Doctrine\Common\Cache\ArrayCache(),true);
             }
             $reflClass = new \ReflectionClass($request->MappedModel);
@@ -111,7 +125,7 @@ namespace OnionSkin\Models
             }
         }
         /**
-         * @param mixed $model
+         * @param Model $model
          * @param \ReflectionProperty $param
          * @param \OnionSkin\Routing\Request $request
          */
@@ -137,9 +151,10 @@ namespace OnionSkin\Models
         }
 
         /**
-         * @param mixed $model
+         * @param Model $model
          * @param \ReflectionProperty $param
          * @param \OnionSkin\Routing\Request $request
+         * @return null|\OnionSkin\Exceptions\ErrorModel
          */
         private static function paramValidation($model,$param,$request)
         {

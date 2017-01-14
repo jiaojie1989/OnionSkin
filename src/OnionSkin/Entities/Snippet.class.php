@@ -3,6 +3,8 @@
 namespace OnionSkin\Entities;
 
 /**
+ * Snippet entity for persistence.
+ * 
  * @Entity
  * @Table(name="snippets")
  * @HasLifecycleCallbacks

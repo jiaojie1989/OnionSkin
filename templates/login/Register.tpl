@@ -10,7 +10,7 @@
 			{$Form->AntiForgeryToken()}
 		
 								{$Form->TextBox("username",null,$L.username,["input"=>["tabindex"=>"1","required"=>"required","pattern"=>$H->cat([".",$ldim,"3,",$rdim]),"title"=>$L.three_character_minimal]])}
-								{$Form->Email("email",null,$L.email,["input"=>["tabindex"=>"2","required"=>"required"]])}
+								{$Form->Email("email",null,$L.email,["input"=>["tabindex"=>"2","required"=>"required","title"=>$L.error_email]])}
 								{$Form->Password("password",null,$L.password,["input"=>["tabindex"=>"3","required"=>"required","pattern"=>$H->cat(["(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).",$ldim,"6,",$rdim]),"title"=>$L.password_pattern]])}
 								{$Form->Password("password2",null,$L.password_confirm,["input"=>["tabindex"=>"4","required"=>"required","pattern"=>$H->cat(["(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).",$ldim,"6,",$rdim]),"title"=>$L.password_pattern]])}
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">{$L.sign_up}</button>

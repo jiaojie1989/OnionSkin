@@ -1,2 +1,4 @@
-RewriteEngine On
-RewriteRule ^([^/]*)$ /index.php?url=$1 [L,QSA]
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+    RewriteRule  (.*)  public/$1 [L]
+</IfModule>

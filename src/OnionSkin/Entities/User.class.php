@@ -3,6 +3,8 @@
 namespace OnionSkin\Entities;
 
 /**
+ * User entity for persistance.
+ *
  * @Entity
  * @Table(name="users")
  * @HasLifecycleCallbacks
@@ -98,6 +100,10 @@ class User {
         throw new \OnionSkin\Exceptions\ValidationException($errors,"Errors during validation of snippet");*/
     }
 
+    /**
+     * Create password for user using Blowfish algorithm.
+     * @param string $password
+     */
     public function createPassword($password)
     {
         $salt = "";
@@ -106,10 +112,23 @@ class User {
             $salt .= $salt_chars[array_rand($salt_chars)];
         $this->passwordAndSalt = crypt($password, sprintf('$2y$%02d$', 10) . $salt);
     }
+
+    /**
+     * Compare password with the one in entity.
+     * @param string $password
+     * @return boolean
+     */
     public function comparePassword($password)
     {
         return crypt($password,$this->passwordAndSalt)==$this->passwordAndSalt;
     }
+
+    /**
+     * Create folders structure.
+     * 
+     * Used for listing (<selection>) in NoteView.tpl
+     * @return array[]
+     */
     public function foldersToArray()
     {
         $array=array();
@@ -123,9 +142,10 @@ class User {
         return $array;
     }
     /**
-     * Summary of folders
-     * @param array $id
+     * Create folders structure.
+     * @param array $array
      * @param Folder $folder
+     * @param string $prefix
      */
     private function folders($array,$folder,$prefix)
     {

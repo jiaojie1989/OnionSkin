@@ -4,24 +4,37 @@ namespace OnionSkin;
 
 class Page {
 
-	private $UrlParts = array();
+	/**
+     * If only logged user can access this page.
+     * @var boolean
+     */
 	public $RequireLogged = true;
+	/**
+	 * If only admin can access this page.
+	 * @var boolean
+	 */
 	public $RequireAdmin = true;
-	public $Url = array();
+    /**
+     * Is called during rights checking.
+     * @return boolean If this function return false, then access to this page won´t be granted.
+     */
+    public function OnCheckRights(){ return true; }
 
-	public final function req_metod()
-	{
-		return $_SERVER['REQUEST_METHOD'];
-	}
-	public final function req_accept()
-	{
-		return $_SERVER['HTTP_ACCEPT'];
-	}
+	/**
+	 * Display smarty template as result.
+	 * @param string $page Smarty template used for displaying.
+	 */
 	protected final function ok($page)
 	{
 		Engine::$Smarty->display($page);
 		die;
 	}
+
+    /**
+     * Return json as result.
+     * @param mixed $Data
+     * @param int $code
+     */
     protected final function json($Data,$code=200)
     {
         http_response_code($code);
@@ -29,58 +42,65 @@ class Page {
         die;
     }
 
-    public final function redirect($page, $code=303,$vars=null)
+    /**
+     * Return redirect tu user
+     * @param mixed $page
+     * @param int $code
+     * @param string[] $vars
+     */
+    public final function redirect($page, $code=303,$vars=array())
     {
-        if(substr($page,0,1)==="@")
-            header("Location: ".substr($page,1,strlen($page)-1),true,$code);
-        else
-            header("Location: ".Routing\Router::Path($page,$vars),true,$code);
-        die();
+        self::RedirectTo($page,$code,$vars);
     }
-    public static function RedirectTo($page, $code=303,$vars=null)
+
+    /**
+     * Return redirect tu user
+     * @param mixed $page
+     * @param int $code
+     * @param string[] $vars
+     */
+    public static function RedirectTo($page, $code=303,$vars=array())
     {
-        if(substr($page,0,1)==="@")
-            header("Location: ".substr($page,1,strlen($page)-1),true,$code);
-        else
-            header("Location: ".Routing\Router::Path($page,$vars),true,$code);
+        header("Location: ".Routing\Router::Path($page,$vars),true,$code);
         die();
     }
 
-    public function execute(){}
-
+    /**
+     * Handler for get request.
+     * @param Routing\Request $request
+     */
     public function get($request){}
+    /**
+     * Handler for post request.
+     * @param Routing\Request $request
+     */
     public function post($request){}
+    /**
+     * Handler for put request.
+     * @param Routing\Request $request
+     */
     public function put($request){}
-    public function remove($request){}
+    /**
+     * Handler for delete request.
+     * @param Routing\Request $request
+     */
+    public function delete($request){}
+    /**
+     * Handler for patch request.
+     * @param Routing\Request $request
+     */
+    public function patch($request){}
+    /**
+     * Handler for options request.
+     * @param Routing\Request $request
+     */
+    public function options($request){}
+    /**
+     * Handler for head request.
+     * @param Routing\Request $request
+     */
+    public function head($request){}
 
-	public static function resolve($page)
-	{
-		$Page = null;
-		$parts=explode('/',$page);
-		$c=count($parts);
-        if($c==0)
-            $Page = new \OnionSkin\Pages\EditPage();
-		switch($parts[0])
-		{
-			case "index":  $Page = new \OnionSkin\Pages\EditPage(); break;
-			case "login":  $Page = new \OnionSkin\Pages\LoginPage(); break;
-			case "logout": $Page = new \OnionSkin\Pages\LogoutPage(); break;
-			case "category": $Page = new \OnionSkin\Pages\CategoryPage(); break;
-			default:
-				if(is_numeric($parts[0]))
-				{
-					if($c===3 && $parts[count($parts)]=="edit")
-						$Page = new \OnionSkin\Pages\EditPage();
-					elseif($c===2 && $c===1)
-						$Page = new \OnionSkin\Pages\ShowPage();
-					break;
-				}
-                $Page = new \OnionSkin\Pages\EditPage();
-                break;
-		}
-		$Page->UrlParts = $parts;
-        return $Page;
-	}
 
 
 

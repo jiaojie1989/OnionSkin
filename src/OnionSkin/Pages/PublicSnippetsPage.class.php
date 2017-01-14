@@ -25,9 +25,15 @@ namespace OnionSkin\Pages
                     case "1": $r="s.createdTime";
                     case "2": $r="s.syntax";
                 }
-                $sql="SELECT s FROM OnionSkin\Entities\Snippet s WHERE s.accessLevel=2 ORDER BY ".$r." ".$_GET["order"][0]["dir"]."";
+                $rr="asc";
+                switch($_GET["order"][0]["dir"])
+                {
+                    case "asc": $rr="asc";
+                    case "desc": $rr="desc";
+                }
+                $sql="SELECT s FROM OnionSkin\Entities\Snippet s WHERE s.accessLevel=2 ORDER BY ".$r." ".$rr."";
                 $query=Engine::$DB->createQuery($sql)->setFirstResult($_GET["start"])->setMaxResults($_GET["length"]);
-                $total=Engine::$DB->createQuery("SELECT count(s.id) FROM OnionSkin\Entities\Snippet s WHERE s.user=".Engine::$User->id)->getSingleScalarResult();
+                $total=Engine::$DB->createQuery("SELECT count(s.id) FROM OnionSkin\Entities\Snippet s WHERE s.accessLevel=2")->getSingleScalarResult();
                 header ('Content-Type', 'application/json');
                 $data=$query->getResult();
                 foreach($data as $d)
@@ -38,7 +44,7 @@ namespace OnionSkin\Pages
                 }
                 return $this->json(array("draw"=>(int)$_GET["draw"],"recordsTotal"=>$total,"recordsFiltered"=>$total,"data"=>$data));
             }
-            $pageid=$request->Param["pageid"];
+            $pageid=$request->Params["pageid"];
             if(!isset($pageid))
                 $pageid=1;
             if($pageid<1)

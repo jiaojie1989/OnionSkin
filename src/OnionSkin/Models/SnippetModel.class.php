@@ -11,12 +11,6 @@ namespace OnionSkin\Models
     use OnionSkin\Routing\Annotations\PostValidate;
     use OnionSkin\Routing\Annotations\AllowHTML;
 	/**
-	 * SnippetModel short summary.
-	 *
-	 * SnippetModel description.
-	 *
-	 * @version 1.0
-	 * @author Fry
 	 */
 	class SnippetModel extends Model
 	{
@@ -88,7 +82,7 @@ namespace OnionSkin\Models
          */
         public function expiration()
         {
-            $syntax=json_decode(file_get_contents("config/languages.json"),true);
+            $syntax=json_decode(file_get_contents("../config/languages.json"),true);
             if(!array_key_exists($this->syntax,$syntax) && $this->syntax!="txt")
                 return new \OnionSkin\Exceptions\ErrorModel(false,"error_unknown_syntax",array(),"Unknown syntax of langugage");
             return null;

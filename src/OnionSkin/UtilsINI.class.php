@@ -1,7 +1,9 @@
 <?php
 
 namespace OnionSkin;
-
+/**
+ * Utilities for handling ini files.
+ */
 class UtilsINI
 {
 	public static function write_ini_file($assoc_arr, $path, $has_sections)

@@ -47,12 +47,12 @@
 			<td><a href="{$R->Path("MySnippets\\FolderPage",array($foo->id))}">{$foo->name}</a></td>
 			<td>{$L.folder}</td>
 			<td>{$foo->modifiedTime->format('Y-m-d H:i:s')}</td>
-			<td>
+			<td><!--
 				<form class="" action="{$R->Path("MySnippets\\FolderPage",array($foo->id))}" method="get">
 					<input type="hidden" name="_method" value="DELETE"><input type="hidden" class="btn ">
 					<button class="btn btn-sm btn-danger">{$L.remove}
 					</button>
-				</form>
+				</form>--!>
 			</td>
 		</tr>
 	  {/foreach}
@@ -62,11 +62,11 @@
 			<td>{$foo->syntax}</td>
 			<td>{$foo->modifiedTime->format('Y-m-d H:i:s')}</td>
 			<td>
-				<form class="btn-group" action="Edit/'+aData.id+'" method="get">
+				<form class="btn-group" action="{$R->Path("EditPage",array($foo->id))}" method="get">
 					<button class="btn btn-sm btn-info">{$L.edit}</button>
 					<input type="hidden" class="btn">
 				</form>
-				<form class="btn-group" action="Edit/'+aData.id+'" method="get">
+				<form class="btn-group" action="{$R->Path("EditPage",array($foo->id))}" method="get">
 					<input type="hidden" name="_method" value="DELETE"><input type="hidden" class="btn ">
 					<button class="btn btn-sm btn-danger">{$L.remove}
 					</button>
