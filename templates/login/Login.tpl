@@ -3,9 +3,9 @@
 {block name="body"}
     <div class="container">
         <div class="card card-container">
-            <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+            <img id="profile-img" class="profile-img-card" alt="Profile" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
             <p id="profile-name" class="profile-name-card"></p>
-			{$Form->Start("login-form","Profile\\LoginPage","post",["class"=>"form-signin", "role"=>"form"])}
+			{$Form->Start("login-form","Profile\\LoginPage","post",["class"=>"form-signin"])}
 			{$Form->BindModel("form_login")}
 			{$Form->AntiForgeryToken()}
 								{$Form->TextBox("username",null,$L.username,["help"=>$H->cat("* ",$L.requiredfield),"input"=>["tabindex"=>"1","required"=>"required","pattern"=>$H->cat([".",$ldim,"3,",$rdim]),"title"=>$L.three_character_minimal]])}

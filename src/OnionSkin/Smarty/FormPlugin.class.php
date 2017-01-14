@@ -166,7 +166,6 @@ namespace OnionSkin\Smarty
             if($this->inner_wrapperAttr!=null)
                 $ret.='<div class="'.$this->inner_wrapperAttr.'">';
             $dataInput=$this->appendThings($dataInput,"class","form-control");
-            $dataInput=$this->appendThings($dataInput,"rows","3");
 
             if(isset($this->model))
                 if($this->method=="get" && isset($this->model->refGET[$id]))
@@ -189,13 +188,13 @@ namespace OnionSkin\Smarty
                 if(is_array($val))
                 {
                     if($value==$val[0])
-                        $sel='selected="selected"';
+                        $sel=' selected="selected"';
                     $ret.='<option '.$sel.' value="'.$val[0].'" >'.$val[1].'</option>';
                     continue;
                 }
                 if($value==$key)
-                    $sel='selected="selected"';
-                $ret.='<option '.$sel.' value="'.$key.'" >'.$val.'</option>';
+                    $sel=' selected="selected"';
+                $ret.='<option'.$sel.' value="'.$key.'" >'.$val.'</option>';
             }
             $ret.="</select>";
             $ret.=$feed;

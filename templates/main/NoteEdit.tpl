@@ -4,14 +4,14 @@
 
 <div class="card  mb-3 mt-3">
   <div class="card-block">
-<h2 class="">{$L.newsnippet}</h2>
+<h2>{$L.newsnippet}</h2>
 
 <div class="container">
 	  {if isset($id)}
-	{$Form->Start("form-edit","EditPage","post",["role"=>"form","class"=>"form-horizontal"],array($id))}
+	{$Form->Start("form-edit","EditPage","post",["class"=>"form-horizontal"],array($id))}
 	  {else}
 	  
-	{$Form->Start("form-edit","EditPage","post",["role"=>"form","class"=>"form-horizontal"])}
+	{$Form->Start("form-edit","EditPage","post",["class"=>"form-horizontal"])}
 	  {/if}
 	{$Form->BindModel("form_edit")}
 	{$Form->AntiForgeryToken()}
@@ -24,7 +24,7 @@
 					$H->cat($L.content," *"),
 					$L.content,
 					[	"help"=>$H->cat("* ",$L.requiredfield),
-						"textarea"=>["tabindex"=>"2","required"=>"required","pattern"=>$H->cat(".",$ldim,"1, ",$rdim),"title"=>$L.one_character_minimal]])}
+						"textarea"=>["tabindex"=>"2","required"=>"required","title"=>$L.one_character_minimal]])}
 	{$Form->Select("syntax",$H->arrayAddBegin($syntax_list,"txt",$L.syntax_none),$L.syntaxHighlight,["select"=>["tabindex"=>"3"]])}
 	{if isset($user)}
 		{$Form->Select("folder",$user->foldersToArray(),$L.folder,["select"=>["tabindex"=>"4"]])}

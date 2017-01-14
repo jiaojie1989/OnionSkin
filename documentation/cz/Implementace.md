@@ -1,5 +1,24 @@
 # Implementace webu
 
+## Zabezpečení
+ * XSS - všechny vkládané i zobrazované data jsou stripované od html tagů.
+ * RFI a LFI - veškeré vkládané data jsou na každém kroku stripovány.
+ * CSRF - Web je RESTful, tudíž GET request pouze zobrazuje data a všechny POST,DELETE,PUT,PATCH requesty obsahují  AntiForgeryToken a validační systém zabraňující CSRF útoku. (Jedinou vyjímkou je systém složek z důvodu rozpracované práce nad rámec WA1)
+ * SQL Injection - Ochrana probíhá na třech úrovních, Router pro validaci cesty, Model pro validaci vstupních dat a následně Doctrine ORM pro validaci před manipulací s DB.
+ * Path Injection - Router spolehlivě zabraňuje zadání nesprávné url a validuje datové typy v parametrech cesty.
+ * Unvalidated redirect/forwards - Veškeré redirecty vyvolané serverem nejprve prochází přes Router. Čímž se zabraňuje redirectování uživatele na nechtěnou stránku.  
+
+## Použité knihovny
+
+ * Smarty - Šablonový framework
+ * Doctrine - Databázový framework pro Entity managment
+ * Doctrine-DataTables - Stránkování, filtrace a zobrazování dat v tabulkách z Doctrine ORM Entit
+ * Leafo-LessPHP - Kompilace Less
+ * Leafo-ScssPHP - Kompilace Scss
+ * Bootstrap 4 - Frontend framework
+ * Minify - Minimalizace js
+ * Highlight.js - Zobrazování syntaxe kódu
+
 ## Struktura aplikace
  * cache - Cache využívaná Smarty template enginem
  * compileCache - Cache využívaná pro kompilaci js a scss
@@ -12,16 +31,18 @@
    * en - Anglická
  * fonts - Fonty a znaky využívané v projektu
  * js - Nezkompilované js scripty
- * js_c - Zkompilované a minimalizované js scripty
  * lang - Jazyky aplikace
+ * public - **Public složka, jediná dostupná z webu**
+   * js_c - Zkompilované a minimalizované js scripty
+   * styles_c - Zkompilované a minimalizované styly 
+   * index.php - Startovní script
+   * .htaccess - Pro apache/nginx - pretty url
  * src - Zdrojové kódy aplikace   
  * styles - Nezkompilované styly
- * styles_c - Zkompilované a minimalizované styly
  * templates - Template webu
  * templates_c - Zkompilované template
  * vendor - Knihovny
- * index.php - Startovní script 
- * .htaccess - Pro apache/nginx - pretty url
+ * .htaccess - Pojistka proti nastavení document root na tuto složku
  * composer.json - Pro knihovny
  * web.config - Pro IIS - pretty url, připravuje cache a provede celou instalaci
 
@@ -75,9 +96,6 @@ Povolené proměnné:
  * float
  * long
 
-
-## Zabezpečení
- * XSS - všechny vkládané i zobrazované data jsou stripované od html tagů jedinou vyjímkou je 
 
 ### Modely
 Modely rozšiřující \OnionSkin\Models\Model slouží pro bindování a validaci proměných pomocí anotací, nejlépe demonstrované na ukázce:

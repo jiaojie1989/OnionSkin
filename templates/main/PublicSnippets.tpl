@@ -6,7 +6,7 @@
   <div class="card-block">
 		<h1 class="mt-3">{$L.public_snippets}</h1>
     <div class="container">
-	<table id="example" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+	<table id="example" class="table table-striped table-bordered dt-responsive nowrap">
         <thead>
             <tr>
                 <th>{$L.name}</th>

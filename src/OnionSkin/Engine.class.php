@@ -66,9 +66,9 @@ class Engine
             self::BakeCss();
         }
         $dbconf= \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(array(__DIR__."/Entities"),true,"../tmp",new \Doctrine\Common\Cache\ArrayCache());
-	
+
         self::$DB=\Doctrine\ORM\EntityManager::create($CONFIG["Database"],$dbconf);
-      
+
         self::$DB->getConfiguration()->addEntityNamespace('OS', "OnionSkin\\Entities");
         $CONFIG["Database"]=null;
 		self::$Config=$CONFIG;
@@ -146,14 +146,14 @@ class Engine
         $scss = new \Leafo\ScssPhp\Compiler();
         $scss->setLineNumberStyle(\Leafo\ScssPhp\Compiler::LINE_COMMENTS);
         $scss->setFormatter("\Leafo\ScssPhp\Formatter\Crunched");
-        $scss->addImportPath("vendor/twbs/bootstrap/scss");
-        $scss->addImportPath("styles");
+        $scss->addImportPath("../vendor/twbs/bootstrap/scss");
+        $scss->addImportPath("../styles");
         if (!file_exists('styles_c'))
             mkdir('styles_c', 0777, true);
 		try {
-            self::bakeFile($scss,"../styles/colorDark.scss","/styles_c/colorDark.css");
-            self::bakeFile($scss,"../styles/colorLight.scss","/styles_c/colorLight.css");
-            self::bakeFile($scss,"../styles/onionskin/loginpanel.scss","/styles_c/login.css");
+            self::bakeFile($scss,__DIR__."/../../styles/colorDark.scss","styles_c/colorDark.css");
+            self::bakeFile($scss,__DIR__."/../../styles/colorLight.scss","styles_c/colorLight.css");
+            self::bakeFile($scss,__DIR__."/../../styles/onionskin/loginpanel.scss","styles_c/login.css");
 		} catch (exception $e) {
 			self::fail(502,$e->getMessage());
 		}
@@ -176,10 +176,10 @@ class Engine
         copy("../vendor/twbs/bootstrap/dist/js/bootstrap.min.js","js_c/bootstrap.js");
         copy("../vendor/components/highlightjs/highlight.pack.min.js","js_c/highlight.js");
         $mimify = new \MatthiasMullie\Minify\JS();
-        $mimify->add("js/textarea_autogrown.js");
+        $mimify->add("../js/textarea_autogrown.js");
         $mimify->minify("js_c/editor.js");
         $mimify = new \MatthiasMullie\Minify\JS();
-        $mimify->add("js/loginpanel.js");
+        $mimify->add("../js/loginpanel.js");
         $mimify->minify("js_c/login.js");
     }
     /**

@@ -51,6 +51,8 @@ class Lang {
         $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
         if(isset($_SESSION["lang"]))
             $lang=$_SESSION["lang"];
+        if($lang!=="cz" || $lang!=="en")
+            $lang="en";
         return $lang;
     }
 

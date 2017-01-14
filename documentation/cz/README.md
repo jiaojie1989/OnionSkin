@@ -1,4 +1,10 @@
 # OnionSkin - Nástroj pro sdílení a ukládání kusů kódu.
+## Rozcestník
+ * [WA1 Požadavky](WA1Requirements.md)
+ * [Zadání](About.md)
+ * [Implementace](Implementace.md)
+ * [Databáze](Database.md)
+ * [Ukázky webu (Screenshoty)](Screenshots.md)
 ## Požadavky na server
  * Apache, Nginx, IIS či jiný web server podporující PHP.
  * PHP 7.0+
@@ -14,7 +20,9 @@ Order Deny,Allow
    Allow from all
 </FilesMatch>
 ```
-V případě že nemáte přístup k apache, iis, či nginx. Se ujistěte že jsou na serveru povoleny .htaccess soubory a všechny soubory mají chmod 644 (O případnou restrikci se postará sama aplikace).
+V případě že nemáte přístup k apache, iis, či nginx. Se ujistěte že jsou na serveru povoleny .htaccess soubory a všechny soubory mají chmod 777 (O případnou restrikci se postará sama aplikace).
+
+**!!!Document root musí ukazovat na složku public!!!**
 
 ## Instalace 
  1. Stáhněte si celý obsah repositáře.

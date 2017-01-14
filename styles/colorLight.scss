@@ -15,6 +15,10 @@ body, html {
 .help-block{
     width:100%;
 }
+.dt-responsive
+{
+    border-spacing: 0;
+}
 @media print {
 body, html{background-image: none; background-color: white;}
 }
