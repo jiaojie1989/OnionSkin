@@ -1,10 +1,12 @@
 # OnionSkin - Nástroj pro sdílení a ukládání kusů kódu.
 ## Rozcestník
- * [WA1 Požadavky](WA1Requirements.md)
+ * [WA1 Požadavky](WA1Requirements.md) (Web by měl splňovat všechny požadované body)
  * [Zadání](About.md)
  * [Implementace](Implementace.md)
  * [Databáze](Database.md)
  * [Ukázky webu (Screenshoty)](Screenshots.md)
+
+
 ## Požadavky na server
  * Apache, Nginx, IIS či jiný web server podporující PHP.
  * PHP 7.0+
