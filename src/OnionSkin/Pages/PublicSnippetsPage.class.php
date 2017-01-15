@@ -34,7 +34,7 @@ namespace OnionSkin\Pages
                 $sql="SELECT s FROM OnionSkin\Entities\Snippet s WHERE s.accessLevel=2 ORDER BY ".$r." ".$rr."";
                 $query=Engine::$DB->createQuery($sql)->setFirstResult($_GET["start"])->setMaxResults($_GET["length"]);
                 $total=Engine::$DB->createQuery("SELECT count(s.id) FROM OnionSkin\Entities\Snippet s WHERE s.accessLevel=2")->getSingleScalarResult();
-                header ('Content-Type', 'application/json');
+                header ('Content-Type: application/json');
                 $data=$query->getResult();
                 foreach($data as $d)
                 {

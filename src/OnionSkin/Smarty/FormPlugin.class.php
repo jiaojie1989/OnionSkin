@@ -194,7 +194,7 @@ namespace OnionSkin\Smarty
                 }
                 if($value==$key)
                     $sel=' selected="selected"';
-                $ret.='<option'.$sel.' value="'.$key.'" >'.$val.'</option>';
+                $ret.='<option'.$sel.' value="'.$key.'" >'.htmlspecialchars($val).'</option>';
             }
             $ret.="</select>";
             $ret.=$feed;
@@ -392,7 +392,7 @@ namespace OnionSkin\Smarty
             if(is_array($data))
                 foreach($data as $key=>$value)
                     if($key!="label" && $key!="wrapper")
-                        $ret.=' '.$key.'="'.$value.'"';
+                        $ret.=' '.$key.'="'.htmlspecialchars($value).'"';
             return $ret."/>";
         }
         private function feedback($txt,$data=array())

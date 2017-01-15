@@ -43,7 +43,7 @@ namespace OnionSkin\Smarty
             else
             {
                 $ret.=$this->bread($folder->parentFolder);
-                $ret.='<li class="breadcrumb-item active"><a class=" " href="'.Router::Path("\OnionSkin\Pages\MySnippets\FolderPage",array($folder->id,$folder->name)).'">'.$folder->name.'</a></li>';
+                $ret.='<li class="breadcrumb-item active"><a class=" " href="'.Router::Path("\OnionSkin\Pages\MySnippets\FolderPage",array($folder->id,$this->Normalize($folder->name))).'">'.$this->Normalize($folder->name).'</a></li>';
             }
             $ret.="</ul>";
             return $ret;
@@ -52,7 +52,7 @@ namespace OnionSkin\Smarty
         {
             $ret=' <ul class="breadcrumb bg-trans "'.$class.'>';
             $ret.=$this->bread($snippet->folder);
-            $ret.='<li class="breadcrumb-item active">'.$snippet->title.'</li>';
+            $ret.='<li class="breadcrumb-item active">'.$this->Normalize($snippet->title).'</li>';
             $ret.="</ul>";
             return $ret;
         }
@@ -66,14 +66,14 @@ namespace OnionSkin\Smarty
                 $ret.='<li class="breadcrumb-item"><a class="" href="'.Router::Path("\OnionSkin\Pages\MySnippets\FolderPage",array()).'">..</a></li>';
             else
             {
-                $ret.='<li class="breadcrumb-item"><a  href="'.Router::Path("\OnionSkin\Pages\MySnippets\FolderPage",array($folder->id,$folder->name)).'">'.$folder->name.'</a></li>';
+                $ret.='<li class="breadcrumb-item"><a  href="'.Router::Path("\OnionSkin\Pages\MySnippets\FolderPage",array($folder->id,$this->Normalize($folder->name))).'">'.$this->Normalize($folder->name).'</a></li>';
                 $ret=$this->bread($folder->parentFolder).$ret;
             }
             return $ret;
         }
         public function Normalize($str)
         {
-            return str_replace(" ","_", str_replace(".","_",$str));
+            return htmlspecialchars(str_replace(" ","_", str_replace(".","_",$str)));
         }
     }
 }

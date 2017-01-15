@@ -30,7 +30,7 @@ namespace OnionSkin\Pages\MySnippets
                 $sql="SELECT s FROM OnionSkin\Entities\Snippet s WHERE s.user=".Engine::$User->id." ORDER BY ".$r." ".$_GET["order"][0]["dir"]."";
                 $query=Engine::$DB->createQuery($sql)->setFirstResult($_GET["start"])->setMaxResults($_GET["length"]);
                 $total=Engine::$DB->createQuery("SELECT count(s.id) FROM OnionSkin\Entities\Snippet s WHERE s.user=".Engine::$User->id)->getSingleScalarResult();
-                header ('Content-Type', 'application/json');
+                header ('Content-Type: application/json');
                 $data=$query->getResult();
                 foreach($data as $d)
                 {

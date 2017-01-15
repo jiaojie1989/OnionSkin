@@ -1,5 +1,5 @@
 {extends file="_centered.tpl"}
-{block name=title}{$snippet->title}{/block}
+{block name=title}{$snippet->title|escape}{/block}
 {block name="innerbody"}
 <div class="card  mb-3 mt-3">
   <div class="card-block">
